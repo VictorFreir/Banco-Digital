@@ -22,3 +22,16 @@ subtraiValor conta valor = do
     let saldoConta = (show $ saldo conta) - valor
     People identificadorConta nomeConta cpfConta numeroContaConta dataNascimentoConta enderecoConta senhaConta perguntaSecretaConta respostaSecretaConta saldoConta
 
+somaValor :: People -> Float -> People
+somaValor conta valor = do
+    let identificadorConta = (show $ identificador conta)
+    let nomeConta = (show $ nome conta)
+    let cpfConta = (show $ cpf conta)
+    let numeroContaConta = (show $ numeroConta conta)
+    let dataNascimentoConta = (show $ dataNascimento conta)
+    let enderecoConta = (show $ endereco conta)
+    let senhaConta = (show $ senha conta)
+    let perguntaSecretaConta = (show $ perguntaSecreta conta)
+    let respostaSecretaConta = (show $ respostaSecreta conta)
+    let saldoConta = (show $ saldo conta) + valor
+    People identificadorConta nomeConta cpfConta numeroContaConta dataNascimentoConta enderecoConta senhaConta perguntaSecretaConta respostaSecretaConta saldoConta
