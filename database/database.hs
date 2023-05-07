@@ -12,7 +12,7 @@ import Data.Time.Clock (UTCTime)
 import Data.Time (UTCTime)
 import GHC.Base (Float)
 
-data People = People {
+data Conta = Conta {
  identificador :: Int,
  nome :: String,
  numeroConta :: String,
@@ -24,3 +24,8 @@ data People = People {
  saldo :: Float
 } deriving (Show, Generic)
 
+getContaByID :: Int-> [Conta] -> Conta
+getContaByID _ [] = Conta (-1) ""
+getContaByID identifierS (x:xs)
+    | (identifier x) == identifierS = x
+    | otherwise = getContaByID identifierS xs
