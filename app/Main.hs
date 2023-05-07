@@ -1,3 +1,5 @@
+module Main where
+
 exibeFuncionalidades :: IO()
 exibeFuncionalidades = do
     print "Selecione a ação desejada com apenas o número referente:"
