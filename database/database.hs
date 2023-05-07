@@ -1,3 +1,4 @@
+
 {-# LANGUAGE OverloadedStrings #-}
 {-# LANGUAGE DeriveGeneric #-}
 
@@ -24,8 +25,14 @@ data Conta = Conta {
  saldo :: Float
 } deriving (Show, Generic)
 
-getContaByID :: Int-> [Conta] -> Conta
-getContaByID _ [] = Conta (-1) ""
-getContaByID identifierS (x:xs)
-    | (identifier x) == identifierS = x
-    | otherwise = getContaByID identifierS xs
+getContaPeloID :: Int-> [Conta] -> Conta
+getContaPeloID _ [] = Conta (-1) ""
+getContaPeloID identidicadorS (x:xs)
+    | (identidicador x) == identidicadorS = x
+    | otherwise = getContaPeloID identidicadorS xs
+
+removeContaPeloID :: Int -> [Conta] -> [Conta]
+removeContaPeloID _ [] = []
+removeContaPeloID identidicadorS (x:xs)
+    | (identidicador x) == identidicadorS = xs
+    | otherwise = [x] ++ (removeContaPeloID identidicadorS xs)

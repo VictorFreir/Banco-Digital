@@ -29,6 +29,12 @@ executable Banco-Digital
 
     -- LANGUAGE extensions used by modules in this package.
     -- other-extensions:
-    build-depends:    base ^>=4.16.4.0
+    build-depends:    
+        base >=4.16.4.0,
+        text >= 1.2 && < 1.3,
+        csv >= 0.1 && < 0.2,
+        bytestring >= 0.11 && < 0.12,
+        filepath >= 1.4 && < 1.5,
+        time >= 1.9 && < 1.10
     hs-source-dirs:   app
     default-language: Haskell2010
