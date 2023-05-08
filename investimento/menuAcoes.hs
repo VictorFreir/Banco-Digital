@@ -1,23 +1,40 @@
-printAcoes :: Int -> String
-printAcoes id = do
-let nome = --pega do csv
-let precoAcao = --pega do csv
-let rendimento = -- epga do csv
-let divYeld = --pega do csv
-id ++ "- " ++ nome ++ " - Preco : " ++ precoAcao ++ "- Status Atual : " ++ rendimento ++ " - Porcentagem em Dividendos : " ++ (divYeld * 100) ++ "%."
+module investimento.menuAcoes where
+import investimento.acoes
+import investimento.rendimento
+
+printAcoes :: IO[Acoes] -> String -> String
+printAcoes [] str = str
+printAcoes (x:xs) str = do
+    str ++ printAcoes xs ((id x) ++ "- " ++ (nome x) ++ " - Preco : " ++ (preco x) ++ "- Status Atual : " ++ (if (rendimento x) = 1 then "valorizando" else if (rendimento x) = -1 then "desvalorizando" else "constante") ++ " - Porcentagem em Dividendos : " ++ ((dividendYeld x)* 100) ++ "%. \n")
 
 exibeFuncionalidadesAcoes :: IO()
 exibeFuncionalidadesAcoes = do
-    putStrLn "Selecione a ação desejada com apenas o número referente:"
+    putStrLn "Selecione a acao desejada com apenas o numero referente:"
     putStrLn "  1- Ver Ações Atualmente"
-    putStrLn "  2- Comprar Açôes"
-    putStrLn "  3- Vender Ações"
+    putStrLn "  2- Comprar Acoes"
+    putStrLn "  3- Vender Acoes"
+    putStrLn "  4- Ver Minhas Acoes"
+    putStrLn "  5- Sair"
 
-selecionaFuncionalidade :: String -> String
-selecionaFuncionalidade "1" = do 
+selecionaFuncionalidade :: String -> IO[Acao] -> IO()
+selecionaFuncionalidade "1" acoes = do 
     putStrLn "Mostra de Acoes"
-    printAcoes
+    putStrLn printAcoes acoes
 selecionaFuncionalidade "2" = do
-    putStrLn ""
+    putStrLn "Comprar Acoes"
 selecionaFuncionalidade "3" = do
-    putStrLn ""
+    putStrLn "Vender Acoes"
+selecionaFuncionalidade "4" = do
+    putStrLn "Suas acoes:"
+selecionaFuncionalidade "5" = do
+    putStrLn "Saindo."
+    sair
+
+
+main :: IO()
+main = do
+    acoes <- readAcoes "acoes.csv"
+    exibeFuncionalidadesAcoes
+    input <- getLine
+    let acao = input
+    selecionaFuncionalidade acao acoes
