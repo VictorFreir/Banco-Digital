@@ -1,11 +1,8 @@
-module investimento.menuAcoes where
-import investimento.acoes
-import investimento.rendimento
-
-printAcoes :: IO[Acoes] -> String -> String
-printAcoes [] str = str
-printAcoes (x:xs) str = do
-    str ++ printAcoes xs ((id x) ++ "- " ++ (nome x) ++ " - Preco : " ++ (preco x) ++ "- Status Atual : " ++ (if (rendimento x) = 1 then "valorizando" else if (rendimento x) = -1 then "desvalorizando" else "constante") ++ " - Porcentagem em Dividendos : " ++ ((dividendYeld x)* 100) ++ "%. \n")
+module Investimento.MenuAcoes where
+import Investimento.Acoes
+import Investimento.Rendimento
+import Investimento.Funcionalidades
+    
 
 exibeFuncionalidadesAcoes :: IO()
 exibeFuncionalidadesAcoes = do
@@ -19,18 +16,32 @@ exibeFuncionalidadesAcoes = do
 selecionaFuncionalidade :: String -> IO[Acao] -> IO()
 selecionaFuncionalidade "1" acoes = do 
     putStrLn "Mostra de Acoes"
-    putStrLn printAcoes acoes
-selecionaFuncionalidade "2" = do
+    printAcoes acoes
+    execucaoRecur acoes
+selecionaFuncionalidade "2" acoes = do
     putStrLn "Comprar Acoes"
-selecionaFuncionalidade "3" = do
+    comprarAcoes acoes
+    execucaoRecur acoes
+selecionaFuncionalidade "3" acoes = do
     putStrLn "Vender Acoes"
-selecionaFuncionalidade "4" = do
+    venderAcoes acoes
+    execucaoRecur acoes
+selecionaFuncionalidade "4" acoes = do
     putStrLn "Suas acoes:"
-selecionaFuncionalidade "5" = do
+    minhasAcoes acoes
+    execucaoRecur acoes
+selecionaFuncionalidade "5" acoes = do
     putStrLn "Saindo."
-    sair
+    sair acoes
 
-
+execucaoRecur :: IO [Acao] -> IO()
+execucao acoes = do
+    putStrLn "O que deseja Fazer Agora?"
+    exibeFuncionalidadesAcoes
+    input <- getLine
+    let acao = input
+    selecionaFuncionalidade acao (atualizaValorAcao acoes)
+    
 main :: IO()
 main = do
     acoes <- readAcoes "acoes.csv"

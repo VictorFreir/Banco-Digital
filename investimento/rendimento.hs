@@ -1,12 +1,6 @@
-module investimento.rendimento where
+module Investimento.Rendimento where
   
 import System.Random (randomRIO)
-
-
-updateMarketStatus :: Int -> Int
-updateMarketStatus probability
-  | probability == 0 = -1
-  | otherwise = 1
 
 updateValue :: Double -> IO Double
 updateValue value = do
