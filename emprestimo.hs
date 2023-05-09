@@ -14,46 +14,46 @@ menu conta = if (temEmprestimo (selecionaEmprestimo conta)) then menuSolitica co
 
 menuSolitica :: Pessoa -> IO
 menuSolitica conta = do 
-    print "Bem vindo a área de Empréstimos"
+     putStrLn "Bem vindo a área de Empréstimos"
     if analiseCredito conta then do
         valorEmprestimo <- solicitarValor conta
-        print "O valor disponível para você é " valorEmprestimo
-        print "Você deseja realizar o empréstimo?"
-        print "Digite 1, caso sim"
-        print "Digite 2, caso não"
+        putStrLn "O valor disponível para você é " valorEmprestimo
+        putStrLn "Você deseja realizar o empréstimo?"
+        putStrLn "Digite 1, caso sim"
+        putStrLn "Digite 2, caso não"
         opcao <- getLine
         if opcao == "1" then do
             solicitarEmprestimo valorEmprestimo
-            print "Empréstimo realizado com sucesso!"
+            putStrLn "Empréstimo realizado com sucesso!"
         else
-            print "Empréstimo não realizado!"
+            putStrLn "Empréstimo não realizado!"
 
     else do
-        print "Atualmente, não temos propostas de empréstimo para o seu perfil. "
+        putStrLn "Atualmente, não temos propostas de empréstimo para o seu perfil. "
 
 
 menuConsulta :: Emprestimo -> IO
 menuConsulta conta  = do
-    print "Bem vindo a área de Empréstimos!"
-    print "Aqui estão as informações do seu empréstimo:"
-    print "Valor total do empréstimo: " (show $ valorTotal emprestimo)
-    print "Quantidade restante de parcelas: " (show $ quantParcelasRestantes emprestimo)
-    print "Proxima parcela: " (show $ proximaParcela emprestimo)
+    putStrLn "Bem vindo a área de Empréstimos!"
+    putStrLn "Aqui estão as informações do seu empréstimo:"
+    putStrLn "Valor total do empréstimo: " (show $ valorTotal emprestimo)
+    putStrLn "Quantidade restante de parcelas: " (show $ quantParcelasRestantes emprestimo)
+    putStrLn "Proxima parcela: " (show $ proximaParcela emprestimo)
     valorProximaFatura <- calcularFatura emprestimo
-    print "Valor da parcela: " valorProximaFatura
-    print "Deseja pagar ela?"
-    print "selecione apenas com o número:"
-    print "1- Para pagar"
-    print "0- Para não pagar"
+    putStrLn "Valor da parcela: " valorProximaFatura
+    putStrLn "Deseja pagar ela?"
+    putStrLn "selecione apenas com o número:"
+    putStrLn "1- Para pagar"
+    putStrLn "0- Para não pagar"
     opcao <- getLine
     if (opcao == "1") then pagarParcela else naoPagarParcela
 
 calcularFatura :: Emprestimo -> IO
-calcularFatura emprestimo = (show $ valorTotal emprestimo) + ((show $ valorTotal emprestimo)* mesesAtrasados emprestimo)
+calcularFatura emprestimo = (valorTotal emprestimo) + (( valorTotal emprestimo)* mesesAtrasados emprestimo)
 
 
 mesesAtrasados :: Emprestimo -> utctDay
-mesesAtrasados = mesesEntreDatas (pegarDiaAtual) (show $ dataProximaParcela emprestimo)
+mesesAtrasados = mesesEntreDatas (pegarDiaAtual) (dataProximaParcela emprestimo)
 
 
 pegarDiaAtual :: IO Day
