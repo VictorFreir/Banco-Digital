@@ -2,7 +2,7 @@ module Investimento.Acoes where
 import Text.CSV (parseCSVFromFile)
 import Investimento.Rendimento
 
-data Acao = Acao { id :: Int, nome :: String, preco :: Double, dividendYeld :: Double }
+data Acao = Acao { idAcao :: Int, nome :: String, preco :: Double, dividendYeld :: Double }
     
 -- Função para converter uma linha de CSV em um objeto Acao
 fromCsv :: [String] -> Maybe Acao
@@ -19,7 +19,6 @@ readAcoes file = do
       Nothing -> fail "Falha ao converter CSV"
       Just acoes -> return acoes
 
-atualizaValorAcao :: IO [Acao] -> IO [Acao]
-atualizaValorAcao (x:y:z:xs) = 
-  (x {preco = (updateValue (preco x))} : y {preco = (updateValue (preco y))} : z {preco = (updateValue (preco z))} : xs)
+atualizaValorAcao :: [Acao] -> [Acao]
+atualizaValorAcao acoes = map (\acao -> acao { preco = updateValue (preco acao) }) acoes
     

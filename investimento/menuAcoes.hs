@@ -1,4 +1,6 @@
 module Investimento.MenuAcoes where
+
+
 import Investimento.Acoes
 import Investimento.Rendimento
 import Investimento.Funcionalidades
@@ -11,7 +13,8 @@ exibeFuncionalidadesAcoes = do
     putStrLn "  2- Comprar Acoes"
     putStrLn "  3- Vender Acoes"
     putStrLn "  4- Ver Minhas Acoes"
-    putStrLn "  5- Sair"
+    putStrLn "  5- Recuperar Dividendos"
+    putStrLn "  6- Sair"
 
 selecionaFuncionalidade :: String -> IO[Acao] -> IO()
 selecionaFuncionalidade "1" acoes = do 
@@ -31,11 +34,15 @@ selecionaFuncionalidade "4" acoes = do
     minhasAcoes acoes
     execucaoRecur acoes
 selecionaFuncionalidade "5" acoes = do
+    putStrLn "Recuperar Dividendos:"
+    recuperarDividendos acoes
+    execucaoRecur acoes
+selecionaFuncionalidade "6" acoes = do
     putStrLn "Saindo."
     sair acoes
 
 execucaoRecur :: IO [Acao] -> IO()
-execucao acoes = do
+execucaoRecur acoes = do
     putStrLn "O que deseja Fazer Agora?"
     exibeFuncionalidadesAcoes
     input <- getLine
