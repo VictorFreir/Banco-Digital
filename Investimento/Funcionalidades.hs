@@ -103,7 +103,7 @@ recuperarDividendos (x:y:z:xs) = do
 sair :: [Acao] -> IO ()
 sair acoes = do
     let linhas = map (\acao -> [show $ idAcao acao, nome acao, printf "%.2f" (preco acao), printf "%.2f" (dividendYeld acao) ++ "\n"]) acoes
-    escreverCSV "./investimento/acoes.csv" linhas
+    escreverCSV "./Investimento/acoes.csv" linhas
 
 
 escreverCSV :: FilePath -> [[String]] -> IO ()
