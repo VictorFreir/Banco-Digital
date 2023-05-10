@@ -13,7 +13,7 @@ exibeFuncionalidadesAcoes = do
     putStrLn "  2- Comprar Acoes"
     putStrLn "  3- Vender Acoes"
     putStrLn "  4- Ver Minhas Acoes"
-    putStrLn "  5- Recuperar Dividendos"
+    putStrLn "  5- Resgatar Dividendos"
     putStrLn "  6- Sair"
 
 selecionaFuncionalidade :: String -> IO[Acao] -> IO()
