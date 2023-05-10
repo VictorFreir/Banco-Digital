@@ -87,7 +87,7 @@ pagarParcela :: Conta -> Conta
 pagarParcela conta = contaAtualizada where
     let emprestimo = emprestimo conta
     if ((quantParcelasRestantes emprestimo) == 1) then do
-        let emprestimoAtualizado = Emprestimo 0.0 0.0 "2001%10%02" 0 0.0
+        let emprestimoAtualizado = Emprestimo 0.0 0.0 pegarDiaAtual 0 0.0
     else do
         let emprestimoAtualizado = Emprestimo (valorTotal emprestimo) (proximaParcela emprestimo) (novaDataParcela (dataProximaParcela emprestimo)) (quantParcelasRestantes empresitmo)-1 (taxaJuros emprestimo)
     let identificadorConta = identificador conta
