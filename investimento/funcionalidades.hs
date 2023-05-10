@@ -4,6 +4,7 @@ import System.Directory
 import Data.List (intercalate)
 import System.IO (withFile, IOMode(WriteMode), hSetNewlineMode, universalNewlineMode, hPutStr)
 import Investimento.Acoes
+import Text.Printf
 import Investimento.Rendimento
 import Investimento.Dividendos
 
@@ -86,7 +87,7 @@ recuperarDividendos (x:y:z:xs) = do
 
 sair :: [Acao] -> IO ()
 sair acoes = do
-    let linhas = map (\acao -> [show $ idAcao acao, nome acao, show $ preco acao, show $ dividendYeld acao]) acoes
+    let linhas = map (\acao -> [show $ idAcao acao, nome acao, printf "%.2f" (preco acao), printf "%.2f" (dividendYeld acao) ++ "\n"]) acoes
     escreverCSV "./investimento/acoes.csv" linhas
 
 
