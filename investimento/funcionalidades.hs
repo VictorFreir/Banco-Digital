@@ -8,11 +8,14 @@ import Text.Printf
 import Investimento.Rendimento
 import Investimento.Dividendos
 
+formatDouble :: Double -> String
+formatDouble = printf "%.2f"
+
 printAcoes :: [Acao] -> IO ()
 printAcoes (x:y:z:xs) = do
-    putStrLn $ "1 - PixGet - Valor: " ++ show (preco x) ++ " - Dividendos: 1%"
-    putStrLn $ "2 - HaisCompany - Valor: " ++ show (preco y) ++ " - Dividendos: 3%"
-    putStrLn $ "3 - Muquiff - Valor: " ++ show (preco z) ++ " - Dividendos: 8%"
+    putStrLn $ "1 - PixGet - Valor: R$ " ++ formatDouble (preco x) ++ " - Dividendos: 1%"
+    putStrLn $ "2 - HaisCompany - Valor: R$ " ++ formatDouble (preco y) ++ " - Dividendos: 3%"
+    putStrLn $ "3 - Muquiff - Valor: R$ " ++ formatDouble (preco z) ++ " - Dividendos: 8%"
 
 comprarAcoes :: [Acao] -> IO ()
 comprarAcoes (x:y:z:xs) = do
@@ -27,20 +30,26 @@ comprarAcoes (x:y:z:xs) = do
                 else if acao == "2" then (preco y) * fromIntegral quantidade
                 else if acao == "3" then (preco z) * fromIntegral quantidade
                 else 0 -- Define um valor padrão para a variável valor
-    if acao == "1" then
-        -- tira da conta valor
-        -- pega o array de acoes na posição 0 e add quantidade
-        print valor
-    else if acao == "2" then
-        -- tira da conta valor
-        -- pega o array de acoes na posição 1 e add quantidade
-        print valor
-    else if acao == "3" then
-        -- tira da conta valor
-        -- pega o array de acoes na posição 2 e add quantidade
-        print valor
-    else
-        putStrLn "Acao invalida"
+    putStrLn ("Essa compra vai custar: R$ " ++ formatDouble valor)
+    putStrLn "Continuar? (s/n)"
+    input <- getLine
+    let continua = input
+    if continua == "s" then
+        if acao == "1" then
+            -- tira da conta valor
+            -- pega o array de acoes na posição 0 e add quantidade
+            putStrLn "Compra Realizada!"
+        else if acao == "2" then
+            -- tira da conta valor
+            -- pega o array de acoes na posição 1 e add quantidade
+            putStrLn "Compra Realizada!"
+        else if acao == "3" then
+            -- tira da conta valor
+            -- pega o array de acoes na posição 2 e add quantidade
+            putStrLn "Compra Realizada!"
+        else
+            putStrLn "Acao invalida"
+    else putStrLn "ok!"
 
 
 minhasAcoes :: [Acao] -> IO ()
@@ -62,20 +71,26 @@ venderAcoes (x:y:z:xs) = do
                 else if acao == "2" then (preco y) * fromIntegral quantidade
                 else if acao == "3" then (preco z) * fromIntegral quantidade
                 else 0 -- Define um valor padrão para a variável valor
-    if acao == "1" then
-        -- coloca na conta valor
-        -- pega o array de acoes na posição 0 e subtrai quantidade
-        print valor
-    else if acao == "2" then
-        -- coloca na conta valor
-        -- pega o array de acoes na posição 1 e subtrai quantidade
-        print valor
-    else if acao == "3" then
-        -- coloca na conta valor
-        -- pega o array de acoes na posição 2 e subtrai quantidade
-        print valor
-    else
-        putStrLn "Acao invalida"
+    putStrLn ("Nesta venda voce vai lucrar: R$ " ++ formatDouble valor)
+    putStrLn "Continuar? (s/n)"
+    input <- getLine
+    let continua = input
+    if continua == "s" then
+        if acao == "1" then
+            -- tira da conta valor
+            -- pega o array de acoes na posição 0 e add quantidade
+            putStrLn "Venda Realizada!"
+        else if acao == "2" then
+            -- tira da conta valor
+            -- pega o array de acoes na posição 1 e add quantidade
+            putStrLn "Venda Realizada!"
+        else if acao == "3" then
+            -- tira da conta valor
+            -- pega o array de acoes na posição 2 e add quantidade
+            putStrLn "Venda Realizada!"
+        else
+            putStrLn "Acao invalida"
+    else putStrLn "ok!"
 
 recuperarDividendos :: [Acao] -> IO ()
 recuperarDividendos (x:y:z:xs) = do
