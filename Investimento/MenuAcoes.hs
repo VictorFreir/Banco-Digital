@@ -52,7 +52,7 @@ execucaoRecur acoes = do
     
 main :: IO()
 main = do
-    acoes <- readAcoes "./investimento/acoes.csv"
+    acoes <- readAcoes "./Investimento/acoes.csv"
     exibeFuncionalidadesAcoes
     input <- getLine
     let acao = input
