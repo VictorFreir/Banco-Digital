@@ -1,6 +1,7 @@
 module ValidaCadastro where
 import Data.Char
 import Data.Maybe
+import qualified System.Process as SP
 import Data.List.Split (splitOn)
 
 validaNome :: String -> IO()
@@ -12,6 +13,7 @@ validaNome nome = do
       putStrLn "Nome inválido.Informe seu nome novamente:"
       novoNome <- getLine
       validaNome novoNome
+  limpaConsole
 
 validaCpf :: String -> IO()
 validaCpf cpf = do
@@ -22,7 +24,7 @@ validaCpf cpf = do
       putStrLn "CPF inválido.Informe seu CPF novamente:"
       novoCpf <- getLine
       validaCpf novoCpf
-
+  limpaConsole
 
 validaDataNascimento :: String -> IO()
 validaDataNascimento dataNascimento = do
@@ -33,6 +35,7 @@ validaDataNascimento dataNascimento = do
       putStrLn "Data de nascimento inválida. Informe sua data de nascimento novamente:"
       novaDataNascimento <- getLine
       validaDataNascimento novaDataNascimento
+  limpaConsole
 
 validaRenda :: String -> IO()
 validaRenda rendaMensal= do
@@ -43,6 +46,7 @@ validaRenda rendaMensal= do
       putStrLn "Renda inválida.Informe sua renda novamente:"
       novaRenda <- getLine
       validaRenda novaRenda
+  limpaConsole
 
 
 validaPerguntaSecreta :: String -> IO()
@@ -54,6 +58,7 @@ validaPerguntaSecreta perguntaSecreta = do
       putStrLn "Pergunta inválida.Informe sua pergunta secreta novamente:"
       novaPerguntaSecreta <- getLine
       validaPerguntaSecreta novaPerguntaSecreta
+  limpaConsole
       
 validaRespostaSecreta :: String -> IO()
 validaRespostaSecreta respostaSecreta = do
@@ -64,6 +69,7 @@ validaRespostaSecreta respostaSecreta = do
       putStrLn "Resposta inválida.Informe sua resposta secreta novamente:"
       novaRespostaSecreta <- getLine
       validaRespostaSecreta novaRespostaSecreta
+  limpaConsole
 
 validaSenha :: String -> IO()
 validaSenha senha = do
@@ -74,6 +80,7 @@ validaSenha senha = do
       putStrLn "SenhaInválida. Prosseguindo com o cadastro."
       novaSenha <- getLine
       validaSenha novaSenha
+  limpaConsole
 
 validaData :: String -> Bool
 validaData dataNascimento =
@@ -106,3 +113,8 @@ calculaIdade dataNascimento = do
         case splitOn "/" dataNascimento of
           [dataSplit, mesSplit, anoSplit] -> (read dataSplit, read mesSplit, read anoSplit)
           _ -> error "Data inválida"
+
+limpaConsole :: IO ()
+limpaConsole = do
+  _ <- SP.system "reset"
+  return ()

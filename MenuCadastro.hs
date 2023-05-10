@@ -30,5 +30,6 @@ cadastrarCliente = do
   validaRespostaSecreta respostaSecreta
   let emprestimo = emprestimoDefault
   let cliente = Cliente nome cpf dataNascimento rendaMensalStr senha perguntaSecreta respostaSecreta emprestimo
-  
+  --adicionar a aonta ao bd
   putStrLn "Cadastro realizado com sucesso"
+

@@ -16,7 +16,7 @@ menu = do
   case opcao of
     "1" -> cadastrarCliente >> menu
     "2" -> fazerLogin >> menu
-    "3" -> recuperarSenha >> menu
+    "3" -> putStrLn "missing implementation"--recuperarSenha >> menu
     "4" -> putStrLn "Saindo..." >> return()
     _   -> putStrLn "Opção inválida." >> menu
 
