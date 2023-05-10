@@ -1,8 +1,11 @@
+{-# LANGUAGE DeriveGeneric #-}
+
 module Investimento.Acoes where
 import Text.CSV (parseCSVFromFile)
 import Investimento.Rendimento
+import GHC.Generics
 
-data Acao = Acao { idAcao :: Int, nome :: String, preco :: Double, dividendYeld :: Double }
+data Acao = Acao { idAcao :: Int, nome :: String, preco :: Double, dividendYeld :: Double } deriving (Show, Generic)
     
 -- Função para converter uma linha de CSV em um objeto Acao
 fromCsv :: [String] -> Maybe Acao
@@ -19,6 +22,13 @@ readAcoes file = do
       Nothing -> fail "Falha ao converter CSV"
       Just acoes -> return acoes
 
-atualizaValorAcao :: [Acao] -> [Acao]
-atualizaValorAcao acoes = map (\acao -> acao { preco = updateValue (preco acao) }) acoes
+atualizaValorAcao :: [Acao] -> IO [Acao]
+atualizaValorAcao acoes = do
+  updatedAcoes <- mapM atualizaPreco acoes
+  return updatedAcoes
+  where
+    atualizaPreco acao = do
+      preco <- updateValue (preco acao)
+      return acao {preco = preco}
+
     

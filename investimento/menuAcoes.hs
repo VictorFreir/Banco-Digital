@@ -16,7 +16,7 @@ exibeFuncionalidadesAcoes = do
     putStrLn "  5- Resgatar Dividendos"
     putStrLn "  6- Sair"
 
-selecionaFuncionalidade :: String -> IO[Acao] -> IO()
+selecionaFuncionalidade :: String -> [Acao] -> IO()
 selecionaFuncionalidade "1" acoes = do 
     putStrLn "Mostra de Acoes"
     printAcoes acoes
@@ -41,17 +41,18 @@ selecionaFuncionalidade "6" acoes = do
     putStrLn "Saindo."
     sair acoes
 
-execucaoRecur :: IO [Acao] -> IO()
+execucaoRecur :: [Acao] -> IO()
 execucaoRecur acoes = do
     putStrLn "O que deseja Fazer Agora?"
     exibeFuncionalidadesAcoes
     input <- getLine
     let acao = input
-    selecionaFuncionalidade acao (atualizaValorAcao acoes)
+    newAcao <- atualizaValorAcao acoes
+    selecionaFuncionalidade acao newAcao
     
 main :: IO()
 main = do
-    acoes <- readAcoes "acoes.csv"
+    acoes <- readAcoes "./investimento/acoes.csv"
     exibeFuncionalidadesAcoes
     input <- getLine
     let acao = input
