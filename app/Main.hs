@@ -1,9 +1,9 @@
 module Main where
 
 import Investimento.MenuAcoes
-import Database.Database (pegaContaPeloCPF recordParaConta pegaContaDoCSV)
+import Database.Database (pegaContaPeloCPF, recordParaConta, pegaContaDoCSV)
 import qualified System.Process as SP
-
+import Transferencia.Transferencia (menuTransferencia) 
 
 menu :: String -> IO()
 menu cpf = do 
@@ -34,7 +34,7 @@ exibeFuncionalidades = do
 
 selecionaFuncionalidade :: String -> Conta -> IO ()
 selecionaFuncionalidade "1" conta = do 
-    putStrLn "Transferencia selecionada"
+    menuTransferencia conta
 selecionaFuncionalidade "2" conta = do 
     putStrLn "Saque selecionado"
 selecionaFuncionalidade "3" conta = do 
@@ -44,7 +44,6 @@ selecionaFuncionalidade "4" conta = do
 selecionaFuncionalidade "5" conta = do 
     putStrLn "Emprestimos selecionados"
 selecionaFuncionalidade "6" conta = do 
-    putStrLn "Acoes selecionadas"
     controleAcoes conta
 selecionaFuncionalidade "7" conta = do 
     putStrLn "Saindo do menu"
@@ -55,3 +54,6 @@ limpaConsole :: IO ()
 limpaConsole = do
   _ <- SP.system "reset"
   return ()
+
+main :: IO()
+main = menu "11111111111"

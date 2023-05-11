@@ -3,21 +3,24 @@ module Transferencia.Transferencia where
 import Models.Conta as Conta
 import Data.Time.Clock (getCurrentTime, UTCTime)
 
-menu :: Conta -> IO ()
-menu contaAtual = do
+import Database.Database (pegaContaPeloCPF, recordParaConta, pegaContaDoCSV)
+
+
+menuTransferencia :: Conta -> IO ()
+menuTransferencia contaAtual = do
     putStrLn "Bem vindo a área de transferências!"
     putStrLn "Informe o valor a ser transferido: "
     valor <- readLine :: Float
     if valor < (show saldo contaAtual) then do
         putStrLn "Para quem vai ser transferido?\nDigite o CPF apenas com números"
         cpf <- getLine
-        let contaDestinataria = encontraContaDestinataria cpfDestinatario
-        if (pegaContaPeloCpf cpf == 0) then erroCpf else transferir contaAtual contaDestinataria valor
+        let contaDestinataria = encontraContaDestinataria cpf
+        if (contaDestinataria cpf == 0) then erroCpf else transferir contaAtual contaDestinataria valor
     else erroValor
 
-encontraContaDestinataria :: IO -> Conta
-encontraContaDestinataria = contaDestinaria where
-    contaDestinataria = Conta 0 "nome" "numero" pegarDiaAtual "endereco" "1234" "pergunta" "resposta" 0.0
+encontraContaDestinataria :: String -> Conta
+encontraContaDestinataria cpf = contaDestinaria where
+    contaDestinataria = pegaContaPeloCPF cpf
 
 erroCpf :: IO()
 erroCpf = do
