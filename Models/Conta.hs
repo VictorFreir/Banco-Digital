@@ -1,6 +1,6 @@
 module Models.Conta where
   import Models.Emprestimo
-  data Cliente  = Cliente {
+  data  Conta  = Conta {
         nome :: String,
         cpf :: String,
         dataNascimento :: String,
@@ -8,7 +8,8 @@ module Models.Conta where
         senha :: String,
         perguntaSecreta :: String,
         respostaSecreta :: String,
-        emprestimo :: Emprestimo
+        saldo :: Int
+        -- emprestimo :: Emprestimo
   } deriving (Show)
   
 

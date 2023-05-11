@@ -3,6 +3,8 @@ import ValidaCadastro
 import Models.Conta
 import Models.Emprestimo
 import EmprestimoDefault
+import SalvaConta
+import Text.CSV
 
 cadastrarCliente :: IO()
 cadastrarCliente = do
@@ -28,8 +30,9 @@ cadastrarCliente = do
   putStrLn "Crie a resposta da sua pergunta secreta"
   respostaSecreta <- getLine
   validaRespostaSecreta respostaSecreta
-  let emprestimo = emprestimoDefault
-  let cliente = Cliente nome cpf dataNascimento rendaMensalStr senha perguntaSecreta respostaSecreta emprestimo
-  --adicionar a aonta ao bd
+  let saldo <- 0
+  -- let emprestimo = emprestimoDefault
+  let conta = Conta nome cpf dataNascimento rendaMensalStr senha perguntaSecreta respostaSecreta saldo --emprestimo
+  escreverCSVConta conta
   putStrLn "Cadastro realizado com sucesso"
 
