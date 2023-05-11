@@ -7,8 +7,10 @@ menu contaAtual = do
     putStrLn "Informe o valor a ser transferido: "
     valor <- readLine :: Float
     if valor < (show saldo contaAtual) then do
+        putStrLn "Para quem vai ser transferido?\nDigite o CPF apenas com números"
+        cpf <- getLine
         let contaDestinataria = encontraContaDestinataria cpfDestinatario
-        if ((show identificador contaDestinaria) == 0) then erroCpf else transferir contaAtual contaDestinataria valor
+        if (pegaContaPeloCpf cpf == 0) then erroCpf else transferir contaAtual contaDestinataria valor
     else erroValor
 
 encontraContaDestinataria :: IO -> Conta
@@ -30,7 +32,6 @@ transferir contaSaida contaChegada valor = do
     salvaConta novaContaSaida
     salvaConta novaContaChegada
     return "Transferência realizada com sucesso!"
-
 
 subtraiValor :: Conta -> Float -> Conta
 subtraiValor conta valor = do
@@ -60,11 +61,9 @@ somaValor conta valor = do
     let saldoConta = (show $ saldo conta) + valor
     Conta identificadorConta nomeConta cpfConta numeroContaConta dataNascimentoConta enderecoConta senhaConta perguntaSecretaConta respostaSecretaConta saldoConta
 
-
 salvaConta :: Conta -> IO
 salvaConta = do
     putStrLn "Conta salva com sucesso"
 
 pegarDiaAtual :: IO UTCTime
 pegarDiaAtual = getCurrentTime >>= return
-    
