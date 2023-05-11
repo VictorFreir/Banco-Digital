@@ -51,8 +51,8 @@ execucaoRecur acoes = do
     newAcao <- atualizaValorAcao acoes
     selecionaFuncionalidadeAcoes acao newAcao
     
-controleAcoes :: IO ()
-controleAcoes = do
+controleAcoes :: Conta -> IO ()
+controleAcoes conta = do
     acoes <- readAcoes "./Investimento/acoes.csv"
     exibeFuncionalidadesAcoes
     input <- getLine
