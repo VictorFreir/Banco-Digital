@@ -21,7 +21,7 @@ cadastrarCliente = do
   putStrLn "Informe sua renda mensal"
   rendaMensalStr <- getLine
   validaRenda rendaMensalStr
-  putStrLn "Crie uma senha para sua conta"
+  putStrLn "Crie uma senha para sua conta (No Minimo 8 digitos)"
   senha <- getLine
   validaSenha senha
   putStrLn "Crie uma pergunta secreta para sua conta"

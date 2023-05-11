@@ -3,6 +3,7 @@ import Data.Char
 import Data.Maybe
 import qualified System.Process as SP
 import Data.List.Split (splitOn)
+import Text.Printf
 
 validaNome :: String -> IO()
 validaNome nome = do
@@ -29,7 +30,7 @@ validaCpf cpf = do
 validaDataNascimento :: String -> IO()
 validaDataNascimento dataNascimento = do
   if validaData dataNascimento
-    then do
+    then
       calculaIdade dataNascimento
     else do
       putStrLn "Data de nascimento inválida. Informe sua data de nascimento novamente:"
@@ -73,7 +74,7 @@ validaRespostaSecreta respostaSecreta = do
 
 validaSenha :: String -> IO()
 validaSenha senha = do
-  if not (null senha) && length senha > 8 && all isAscii senha 
+  if not (null senha) && length senha > 7 && all isAscii senha 
     then do 
       putStrLn "Senha válida. Prosseguindo como o cadastro."
     else do
@@ -102,17 +103,18 @@ validaData dataNascimento =
 calculaIdade :: String -> IO ()
 calculaIdade dataNascimento = do
   let (dia, mes, ano) = converteData dataNascimento
-      (diaRef, mesRef, anoRef) = (10, 2, 2023) -- Data de comparação fixa
-      idade = anoRef - ano - if (mesRef, diaRef) < (mes, dia) then 0 else 1
+  let(diaRef, mesRef, anoRef) = (10, 5, 2023) -- Data de comparação fixa
+  let idade = anoRef - ano
+  print idade
   if idade >= 18
     then putStrLn "Cliente maior de idade. Prosseguindo com o cadastro."
-    else putStrLn "Idade menor que 18 anos. Impossível cadastrar." >> return ()
-    where
-      converteData :: String -> (Int, Int, Int)
-      converteData dateStr =
-        case splitOn "/" dataNascimento of
-          [dataSplit, mesSplit, anoSplit] -> (read dataSplit, read mesSplit, read anoSplit)
-          _ -> error "Data inválida"
+    else error "Idade menor que 18 anos. Impossível cadastrar."
+  where
+    converteData :: String -> (Int, Int, Int)
+    converteData dateStr =
+      case splitOn "/" dataNascimento of
+        [dataSplit, mesSplit, anoSplit] -> (read dataSplit, read mesSplit, read anoSplit)
+        _ -> error "Data inválida"
 
 limpaConsole :: IO ()
 limpaConsole = do

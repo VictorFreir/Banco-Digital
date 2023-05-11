@@ -1,3 +1,5 @@
+module Main where
+
 import MenuCadastro
 import MenuLogin
 import Models.Conta
