@@ -1,4 +1,4 @@
-module SalvaConta where
+module Login.SalvaConta where
 
 import Text.CSV (parseCSVFromFile)
 import Text.Printf (printf)
@@ -13,5 +13,5 @@ escreverCSVConta nomeArquivo linhas = withFile nomeArquivo AppendMode $ \arquivo
 
 sairConta :: [Conta] -> IO ()
 sairConta conta = do
-    let linhas = map (\c -> [nome c, cpf c, dataNascimento c, rendaMensal c, senha c, perguntaSecreta c, respostaSecreta c, printf "%.2f" (saldo c), "\n"]) conta
+    let linhas = map (\c -> [nome c, cpf c, dataNascimento c, senha c, perguntaSecreta c, respostaSecreta c, printf "%.2f" (saldo c), "\n"]) conta
     escreverCSVConta "./contas.csv" linhas

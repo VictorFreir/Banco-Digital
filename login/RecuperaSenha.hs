@@ -1,4 +1,4 @@
-module RecuperaSenha where
+module Login.RecuperaSenha where
 
 import Text.printf
 import Database.Database

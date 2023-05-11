@@ -8,3 +8,4 @@ updateValue value = do
   let factor = if probability == 0 then 0.90 else 1.0 / 0.90 -- determina se o valor será aumentado ou diminuído
   let updatedValue = value * factor -- atualiza o valor
   return updatedValue
+  

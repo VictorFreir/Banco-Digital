@@ -1,4 +1,4 @@
-module ValidaLogin where
+module Login.ValidaLogin where
   
 import Data.Char
 import Database.Database

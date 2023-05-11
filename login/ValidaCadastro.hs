@@ -1,4 +1,4 @@
-module ValidaCadastro where
+module Login.ValidaCadastro where
 import Data.Char
 import Data.Maybe
 import qualified System.Process as SP
@@ -29,13 +29,8 @@ validaCpf cpf = do
 validaDataNascimento :: String -> IO()
 validaDataNascimento dataNascimento = do
   if validaData dataNascimento
-    then do
-      if (calculaIdade dataNascimento) > 17
-        then do
-        putStrLn "Usuário maior de idade, prosseguindo cadastro"
-        limpaconsole
-        else do
-        putStrLn "Usuário menor de idade. Encerrando cadastro" >> return()
+      then do
+      putStrLn "Usuário maior de idade, prosseguindo cadastro"
     else do
       putStrLn "Data de nascimento inválida. Informe sua data de nascimento novamente:"
       novaDataNascimento <- getLine
@@ -123,6 +118,3 @@ limpaConsole :: IO ()
 limpaConsole = do
   _ <- SP.system "reset"
   return ()
-
-sliceConta :: String -> String
-sliceConta cpf = take 6 (drop 0 str)

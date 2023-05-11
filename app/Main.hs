@@ -1,7 +1,7 @@
 module Main where
 
-import MenuCadastro
-import MenuLogin
+import Login.MenuCadastro
+import Login.MenuLogin
 import Models.Conta
 
 main :: IO ()

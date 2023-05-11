@@ -1,6 +1,6 @@
-module MenuLogin where
+module Login.MenuLogin where
 
-import ValidaLogin
+import Login.ValidaLogin
   
 fazerLogin :: IO ()
 fazerLogin = do

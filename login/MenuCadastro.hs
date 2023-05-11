@@ -1,9 +1,9 @@
-module MenuCadastro where
-import ValidaCadastro
+module Login.MenuCadastro where
+import Login.ValidaCadastro
 import Models.Conta
 import Models.Emprestimo
 import EmprestimoDefault
-import SalvaConta
+import Login.SalvaConta
 import Text.CSV
 
 cadastrarCliente :: IO()

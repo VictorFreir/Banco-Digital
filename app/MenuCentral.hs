@@ -1,5 +1,6 @@
 module MenuCentral where
 
+import System.Exit
 import Models.Conta
 import Investimento.MenuAcoes
 import Database.Database (pegaContaPeloCPF, recordParaConta, pegaContaDoCSV, pegaSaldo)
@@ -48,6 +49,7 @@ selecionaFuncionalidade "7" conta = do
     controleAcoes conta
 selecionaFuncionalidade "8" conta = do 
     putStrLn "Saindo do menu"
+    exitSuccess
 selecionaFuncionalidade _ conta= do 
     putStrLn "A opcao selecionada e invalida"
 
