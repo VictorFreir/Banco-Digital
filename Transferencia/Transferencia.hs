@@ -47,7 +47,6 @@ somaValor conta valor = do
 
 salvaConta :: Conta -> IO ()
 salvaConta conta = alterarSaldoNoCSV (cpf conta) (saldo conta)
-    
 
 pegarDiaAtual :: IO UTCTime
 pegarDiaAtual = getCurrentTime >>= return
