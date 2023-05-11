@@ -14,4 +14,4 @@ escreverCSVConta nomeArquivo linhas = withFile nomeArquivo WriteMode $ \arquivo 
 sairConta :: [Conta] -> IO ()
 sairConta conta = do
     let linhas = map (\c -> [nome c, cpf c, dataNascimento c, rendaMensal c, senha c, perguntaSecreta c, respostaSecreta c, printf "%.2f" (saldo c)]) conta
-    escreverCSVConta "/home/wander/plp/Banco-Digital/contas.csv" linhas
+    escreverCSVConta "./contas.csv" linhas

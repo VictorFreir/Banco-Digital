@@ -8,7 +8,7 @@ module Models.Conta where
         senha :: String,
         perguntaSecreta :: String,
         respostaSecreta :: String,
-        saldo :: Int
+        saldo :: Double
         -- emprestimo :: Emprestimo
   } deriving (Show)
   

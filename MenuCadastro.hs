@@ -30,9 +30,10 @@ cadastrarCliente = do
   putStrLn "Crie a resposta da sua pergunta secreta"
   respostaSecreta <- getLine
   validaRespostaSecreta respostaSecreta
-  let saldo <- 0
+  let saldo = 0.0
   -- let emprestimo = emprestimoDefault
   let conta = Conta nome cpf dataNascimento rendaMensalStr senha perguntaSecreta respostaSecreta saldo --emprestimo
-  escreverCSVConta conta
+  let lista = [conta]
+  sairConta lista
   putStrLn "Cadastro realizado com sucesso"
 
