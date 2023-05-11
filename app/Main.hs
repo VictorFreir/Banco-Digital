@@ -10,9 +10,7 @@ menu cpf = do
     print "Bem vindo, DigiBank!"
     exibeFuncionalidades
     
-    let contas_records = pegaContaDoCSV "db.csv"
-    let contas = recordParaConta contas_records
-    let conta = pegaContaPeloCPF cpf contas
+    let conta = pegaContaPeloCPF cpf 
 
     input <- getLine
     let funcionalidadeID = input
