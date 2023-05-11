@@ -6,6 +6,9 @@ import Investimento.MenuAcoes
 import Database.Database (pegaContaPeloCPF, recordParaConta, pegaContaDoCSV, pegaSaldo)
 import qualified System.Process as SP
 import Transferencia.Transferencia (menuTransferencia) 
+import Saque.Saque (sacar)
+import Emprestimo.Emprestimo (menuEmprestimo)
+
 
 menu :: String -> IO()
 menu cpf = do 
@@ -38,13 +41,13 @@ selecionaFuncionalidade "1" conta = do
 selecionaFuncionalidade "2" conta = do 
     menuTransferencia conta
 selecionaFuncionalidade "3" conta = do 
-    putStrLn "Saque selecionado"
+    sacar conta
 selecionaFuncionalidade "4" conta = do 
     putStrLn "Consulta de extrato selecionada"
 selecionaFuncionalidade "5" conta = do 
     putStrLn "Poupança selecionada"
 selecionaFuncionalidade "6" conta = do 
-    putStrLn "Emprestimos selecionados"
+    menuEmprestimo conta
 selecionaFuncionalidade "7" conta = do 
     controleAcoes conta
 selecionaFuncionalidade "8" conta = do 

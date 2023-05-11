@@ -1,4 +1,7 @@
-import Models.Emprestimo as Emprestimo
+module Emprestimo.Emprestimo where
+
+import Models.Emprestimo 
+
 import Models.Conta as Conta
 import Data.Time.Calendar
 import GHC.Base (IO)
@@ -6,8 +9,8 @@ import Data.Time.Clock (getCurrentTime, utctDay)
 import Data.ByteString (getLine)
 import Database.Database
 
-menu :: Conta -> IO()
-menu conta = if (temEmprestimo conta) then menuSolitica conta else menuConsulta conta
+menuEmprestimo :: Conta -> IO()
+menuEmprestimo conta = if (temEmprestimo conta) then menuSolitica conta else menuConsulta conta
 
 menuSolitica :: Conta -> IO()
 menuSolitica conta = do 
