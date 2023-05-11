@@ -118,3 +118,9 @@ limpaConsole :: IO ()
 limpaConsole = do
   _ <- SP.system "reset"
   return ()
+
+sliceConta :: String -> String
+sliceConta cpf = take 5 cpf
+
+sliceID :: String -> Int
+sliceID cpf = read(take 5 (drop 0 cpf))
