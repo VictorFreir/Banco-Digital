@@ -3,7 +3,8 @@ module Investimento.MenuAcoes where
 
 import Investimento.Acoes
 import Investimento.Rendimento
-import Investimento.Funcionalidades
+import Investimento.Funcionalidades 
+import Models.Conta
     
 
 exibeFuncionalidadesAcoes :: IO()
@@ -16,28 +17,28 @@ exibeFuncionalidadesAcoes = do
     putStrLn "  5- Resgatar Dividendos"
     putStrLn "  6- Sair"
 
-selecionaFuncionalidade :: String -> [Acao] -> IO()
-selecionaFuncionalidade "1" acoes = do 
+selecionaFuncionalidadeAcoes :: String -> [Acao] -> IO()
+selecionaFuncionalidadeAcoes "1" acoes = do 
     putStrLn "Mostra de Acoes"
     printAcoes acoes
     execucaoRecur acoes
-selecionaFuncionalidade "2" acoes = do
+selecionaFuncionalidadeAcoes "2" acoes = do
     putStrLn "Comprar Acoes"
     comprarAcoes acoes
     execucaoRecur acoes
-selecionaFuncionalidade "3" acoes = do
+selecionaFuncionalidadeAcoes "3" acoes = do
     putStrLn "Vender Acoes"
     venderAcoes acoes
     execucaoRecur acoes
-selecionaFuncionalidade "4" acoes = do
+selecionaFuncionalidadeAcoes "4" acoes = do
     putStrLn "Suas acoes:"
     minhasAcoes acoes
     execucaoRecur acoes
-selecionaFuncionalidade "5" acoes = do
+selecionaFuncionalidadeAcoes "5" acoes = do
     putStrLn "Recuperar Dividendos:"
     recuperarDividendos acoes
     execucaoRecur acoes
-selecionaFuncionalidade "6" acoes = do
+selecionaFuncionalidadeAcoes "6" acoes = do
     putStrLn "Saindo."
     sair acoes
 
@@ -48,12 +49,12 @@ execucaoRecur acoes = do
     input <- getLine
     let acao = input
     newAcao <- atualizaValorAcao acoes
-    selecionaFuncionalidade acao newAcao
+    selecionaFuncionalidadeAcoes acao newAcao
     
-main :: IO()
-main = do
+controleAcoes :: IO ()
+controleAcoes = do
     acoes <- readAcoes "./Investimento/acoes.csv"
     exibeFuncionalidadesAcoes
     input <- getLine
     let acao = input
-    selecionaFuncionalidade acao acoes
+    selecionaFuncionalidadeAcoes acao acoes
