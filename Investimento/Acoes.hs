@@ -3,15 +3,15 @@ import Text.CSV (parseCSVFromFile)
 import Investimento.Rendimento
 import Data.List.Split (splitOn)
 
-data Acao = Acao { idAcao :: Int, nome :: String, preco :: Double, dividendYeld :: Double } deriving (Eq)
+data Acao = Acao { idAcao :: Int, nomeAcao :: String, preco :: Float, dividendYeld :: Float } deriving (Eq)
 
 instance Read Acao where
-  readsPrec _ str = [(Acao (read idAcao) nome (read preco) (read dividendYeld), "")]
+  readsPrec _ str = [(Acao (read idAcao) nomeAcao (read preco) (read dividendYeld), "")]
     where
-      [idAcao, nome, preco, dividendYeld] = splitOn  "," str
+      [idAcao, nomeAcao, preco, dividendYeld] = splitOn  "," str
 
 instance Show Acao where
-  show (Acao idAcao nome preco dividendYeld) = "Acao " ++ show idAcao ++ " " ++ nome ++ " " ++ show preco ++ " " ++ show dividendYeld
+  show (Acao idAcao nomeAcao preco dividendYeld) = "Acao " ++ show idAcao ++ " " ++ nomeAcao ++ " " ++ show preco ++ " " ++ show dividendYeld
     
 -- Função para ler o arquivo CSV e retornar uma lista de Acoes
 readAcoes :: String -> IO [Acao]
