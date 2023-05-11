@@ -1,8 +1,8 @@
 module Main where
 
-import Login.MenuCadastro as MenuCadastro
-import Login.MenuLogin as MenuLogin
-import Models.Conta as Conta
+import Login.MenuCadastro
+import Login.MenuLogin
+import Models.Conta
 
 main :: IO ()
 main = menu
@@ -16,11 +16,11 @@ menu = do
   putStrLn "4 - Sair"
   opcao <- getLine
   case opcao of
-    "1" -> cadastrarCliente >> menu
-    "2" -> fazerLogin >> menu
-    "3" -> putStrLn "missing implementation"--recuperarSenha >> menu
-    "4" -> putStrLn "Saindo..." >> return()
-    _   -> putStrLn "Opção inválida." >> menu
+     "1" -> cadastrarCliente >> menu
+     "2" -> fazerLogin >> menu
+     "3" -> recuperarSenha >> menu
+     "4" -> putStrLn "Saindo..." >> return()
+     _   -> putStrLn "Opção inválida." >> menu
 
 
 
