@@ -11,7 +11,7 @@ data Conta = Conta {
     nome :: String,
     numeroConta :: String,
     cpf :: String,
-    dataNascimento :: UTCTime,
+    dataNascimento :: String,
     endereco :: String,
     senha :: String,
     perguntaSecreta :: String,

@@ -1,4 +1,4 @@
 identificador,nome,numeroConta,cpf,dataNascimento,endereco,senha,perguntaSecreta,respostaSecreta,saldo,acao1,acao2,acao3,valorTotal,proximaParcela,dataProximaParcela,quantParcelasRestantes,taxaJuros
 1,Raniel,9456123,7451746765,2001-12-21 00:00:00.000000 UTC,BIU 302,mypass,nome do chacorro, gato,7800,30,2,1,0,0,2020-01-01 00:00:00.000000 UTC,0,0
 2,Helder,9456124,7451746766,1537-05-06 00:00:00.000000 UTC,casa,123,nome da vo, marta,4500,0,0,0,0,0,2020-01-01 00:00:00.000000 UTC,0,0
-3,Abraao,9456125,7451746767,2003-04-10 00:00:00.000000 UTC,casa,123,anime favorito, Boku no pico,1200,50,20,15,0,0,2020-01-01 00:00:00.000000 UTC,0,0
+3,Abraao,9456125,7451746767,2003-04-10 00:00:00.000000 UTC,casa,123,anime favorito,naruto,1200,0,0,0,0,0,2020-01-01 00:00:00.000000 UTC,0,0
