@@ -38,4 +38,3 @@ cadastrarCliente = do
   let lista = [conta]
   sairConta lista
   putStrLn "Cadastro realizado com sucesso"
-  
