@@ -1,4 +1,5 @@
 module Models.Conta where
+
 import GHC.Generics    
 import Data.Time.Clock (UTCTime)
 import Data.Time (UTCTime)

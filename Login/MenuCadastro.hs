@@ -1,8 +1,9 @@
 module Login.MenuCadastro where
+
 import Login.ValidaCadastro
 import Models.Conta
 import Models.Emprestimo
-import EmprestimoDefault
+import Login.EmprestimoDefault as EmprestimoDefault
 import Login.SalvaConta
 import Text.CSV
 

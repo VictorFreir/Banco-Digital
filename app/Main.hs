@@ -1,8 +1,8 @@
 module Main where
 
-import Login.MenuCadastro
-import Login.MenuLogin
-import Models.Conta
+import Login.MenuCadastro as MenuCadastro
+import Login.MenuLogin as MenuLogin
+import Models.Conta as Conta
 
 main :: IO ()
 main = menu
