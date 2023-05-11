@@ -1,31 +1,35 @@
 module Main where
 
-import MenuCadastro
-import MenuLogin
-import Models.Conta
+exibeFuncionalidades :: IO()
+exibeFuncionalidades = do
+    print "Selecione a acao desejada com apenas o numero referente:"
+    print "  1- Transferir"
+    print "  2- Sacar"
+    print "  3- Consultar extrato"
+    print "  4- Poupanaa"
+    print "  5- Emprestimos"
+    print "  6- Acoes" 
+    print "  7- Sair"
 
-main :: IO ()
-main = menu
+selecionaFuncionalidade :: String -> String
+selecionaFuncionalidade "1" = "Transferencia selecionada"
+selecionaFuncionalidade "2" = "Saque selecionado"
+selecionaFuncionalidade "3" = "Consulta de extrato selecionada"
+selecionaFuncionalidade "4" = "Poupança selecionada"
+selecionaFuncionalidade "5" = "Emprestimos selecionados"
+selecionaFuncionalidade "6" = "Acoes selecionadas"
+selecionaFuncionalidade "7" = "Saindo do menu"
+selecionaFuncionalidade _ = "A opcao selecionada e invalida"
 
-menu :: IO ()
-menu = do
-  putStrLn "Escolha uma opção:"
-  putStrLn "1 - Cadastro"
-  putStrLn "2 - Login"
-  putStrLn "3 - Recuperar senha"
-  putStrLn "4 - Sair"
-  opcao <- getLine
-  case opcao of
-    "1" -> cadastrarCliente >> menu
-    "2" -> fazerLogin >> menu
-    "3" -> putStrLn "missing implementation"--recuperarSenha >> menu
-    "4" -> putStrLn "Saindo..." >> return()
-    _   -> putStrLn "Opção inválida." >> menu
+menu :: IO()
+menu = do 
+    exibeFuncionalidades
+    funcionalidadeID <- getLine
+    let saida = selecionaFuncionalidade funcionalidadeID
+    print saida
+    menu
 
-
-
-
-  
-
-
-
+main :: IO()
+main = do
+    print "Bem vindo, DigiBank!"
+    menu

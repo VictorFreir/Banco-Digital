@@ -1,3 +1,0 @@
-module RecuperaSenha where
-  
-holdImplementation :: 
