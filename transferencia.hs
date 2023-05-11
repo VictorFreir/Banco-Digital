@@ -35,31 +35,11 @@ transferir contaSaida contaChegada valor = do
 
 subtraiValor :: Conta -> Float -> Conta
 subtraiValor conta valor = do
-    let identificadorConta = (show $ identificador conta)
-    let nomeConta = (show $ nome conta)
-    let cpfConta = (show $ cpf conta)
-    let numeroContaConta = (show $ numeroConta conta)
-    let dataNascimentoConta = (show $ dataNascimento conta)
-    let enderecoConta = (show $ endereco conta)
-    let senhaConta = (show $ senha conta)
-    let perguntaSecretaConta = (show $ perguntaSecreta conta)
-    let respostaSecretaConta = (show $ respostaSecreta conta)
-    let saldoConta = (show $ saldo conta) - valor
-    Conta identificadorConta nomeConta cpfConta numeroContaConta dataNascimentoConta enderecoConta senhaConta perguntaSecretaConta respostaSecretaConta saldoConta
+    conta {valor = saldo-valor}
 
 somaValor :: Conta -> Float -> Conta
 somaValor conta valor = do
-    let identificadorConta = (show $ identificador conta)
-    let nomeConta = (show $ nome conta)
-    let cpfConta = (show $ cpf conta)
-    let numeroContaConta = (show $ numeroConta conta)
-    let dataNascimentoConta = (show $ dataNascimento conta)
-    let enderecoConta = (show $ endereco conta)
-    let senhaConta = (show $ senha conta)
-    let perguntaSecretaConta = (show $ perguntaSecreta conta)
-    let respostaSecretaConta = (show $ respostaSecreta conta)
-    let saldoConta = (show $ saldo conta) + valor
-    Conta identificadorConta nomeConta cpfConta numeroContaConta dataNascimentoConta enderecoConta senhaConta perguntaSecretaConta respostaSecretaConta saldoConta
+    conta {valor = saldo+valor}
 
 salvaConta :: Conta -> IO
 salvaConta = do
