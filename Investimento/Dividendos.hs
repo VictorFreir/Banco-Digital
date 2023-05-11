@@ -1,5 +1,5 @@
 module Investimento.Dividendos where
 
-dividendos :: Int -> Double -> Double -> Double
+dividendos :: Int -> Float -> Float -> Float
 dividendos numAcoes precoAcao divYeld = fromIntegral numAcoes * precoAcao * divYeld
 

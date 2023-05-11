@@ -24,19 +24,19 @@ selecionaFuncionalidadeAcoes "1" conta acoes = do
     execucaoRecur conta acoes
 selecionaFuncionalidadeAcoes "2" conta acoes = do
     putStrLn "Comprar Acoes"
-    comprarAcoes acoes
+    comprarAcoes conta acoes
     execucaoRecur conta acoes
 selecionaFuncionalidadeAcoes "3" conta acoes = do
     putStrLn "Vender Acoes"
-    venderAcoes acoes
+    venderAcoes conta acoes
     execucaoRecur conta acoes
 selecionaFuncionalidadeAcoes "4" conta acoes = do
     putStrLn "Suas acoes:"
-    minhasAcoes acoes
+    minhasAcoes conta acoes
     execucaoRecur conta acoes
 selecionaFuncionalidadeAcoes "5" conta acoes = do
     putStrLn "Recuperar Dividendos:"
-    recuperarDividendos acoes
+    recuperarDividendos conta acoes
     execucaoRecur conta acoes
 selecionaFuncionalidadeAcoes "6" conta acoes = do
     putStrLn "Saindo."
@@ -48,8 +48,9 @@ execucaoRecur conta acoes = do
     exibeFuncionalidadesAcoes
     input <- getLine
     let acao = input
+    let newConta = pegaContaPeloCPF (cpf conta)
     newAcao <- atualizaValorAcao acoes
-    selecionaFuncionalidadeAcoes acao conta newAcao
+    selecionaFuncionalidadeAcoes acao newConta newAcao
     
 controleAcoes :: Conta -> IO ()
 controleAcoes conta = do

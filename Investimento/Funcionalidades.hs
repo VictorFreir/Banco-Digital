@@ -1,5 +1,6 @@
 module Investimento.Funcionalidades where
 
+import Models.Conta
 import Database.Database
 import System.Directory
 import Data.List (intercalate)
@@ -9,7 +10,7 @@ import Text.Printf
 import Investimento.Rendimento
 import Investimento.Dividendos
 
-formatDouble :: Double -> String
+formatDouble :: Float -> String
 formatDouble = printf "%.2f"
 
 printAcoes :: [Acao] -> IO ()
@@ -18,50 +19,66 @@ printAcoes (x:y:z:xs) = do
     putStrLn $ "2 - HaisCompany - Valor: R$ " ++ formatDouble (preco y) ++ " - Dividendos: 3%"
     putStrLn $ "3 - Muquiff - Valor: R$ " ++ formatDouble (preco z) ++ " - Dividendos: 8%"
 
-comprarAcoes :: [Acao] -> IO ()
-comprarAcoes (x:y:z:xs) = do
-    putStrLn "Qual acao voce deseja comprar? (responda com o Id Valido)"
+comprarAcoes :: Conta -> [Acao] -> IO ()
+comprarAcoes conta (x:y:z:xs) = do
+    putStrLn "Qual ação você deseja comprar? (responda com o Id válido)"
     printAcoes (x:y:z:xs)
     input <- getLine
     let acao = input
-    putStrLn "Quantas acoes dessa voce deseja comprar?"
-    input2 <- getLine
-    let quantidade = read input2 :: Int
-        valor = if acao == "1" then (preco x) * fromIntegral quantidade
-                else if acao == "2" then (preco y) * fromIntegral quantidade
-                else if acao == "3" then (preco z) * fromIntegral quantidade
-                else 0 -- Define um valor padrão para a variável valor
-    putStrLn ("Essa compra vai custar: R$ " ++ formatDouble valor)
-    putStrLn "Continuar? (s/n)"
-    input <- getLine
-    let continua = input
-    if continua == "s" then
-        if acao == "1" then
-            -- tira da conta valor
-            -- pega o array de acoes na posição 0 e add quantidade
-            putStrLn "Compra Realizada!"
-        else if acao == "2" then
-            -- tira da conta valor
-            -- pega o array de acoes na posição 1 e add quantidade
-            putStrLn "Compra Realizada!"
-        else if acao == "3" then
-            -- tira da conta valor
-            -- pega o array de acoes na posição 2 e add quantidade
-            putStrLn "Compra Realizada!"
-        else
-            putStrLn "Acao invalida"
-    else putStrLn "ok!"
+    if acao `notElem` ["1", "2", "3"] then
+        putStrLn "Id inválido!" >> return ()
+    else do
+        putStrLn "Quantas ações dessa você deseja comprar?"
+        input2 <- getLine
+        let quantidade = read input2 :: Int
+            valor = if acao == "1" then (preco x) * fromIntegral quantidade
+                    else if acao == "2" then (preco y) * fromIntegral quantidade
+                    else if acao == "3" then (preco z) * fromIntegral quantidade
+                    else 0 -- Define um valor padrão para a variável valor
+        putStrLn ("Essa compra vai custar: R$ " ++ formatDouble valor)
+        let newSaldo = (saldo conta) - valor
+        if newSaldo < 0.0 then
+            putStrLn "Seu saldo é insuficiente!" >> return ()
+        else do
+            putStrLn ("Saldo atual: R$ " ++ show (saldo conta))
+            putStrLn "Continuar? (s/n)"
+            input <- getLine
+            let continua = input
+                listaAcoes = pegaAcoes (cpf conta)
+            if continua == "s" then do
+                if acao == "1" then do
+                    alteraAcoesNoCSV (cpf conta) $ (listaAcoes !! 0 + quantidade) : tail listaAcoes
+                    alterarSaldoNoCSV (cpf conta) newSaldo
+                    putStrLn "Compra realizada!"
+                else if acao == "2" then do
+                    alteraAcoesNoCSV (cpf conta) $ head listaAcoes : (listaAcoes !! 1 + quantidade) : tail (tail listaAcoes)
+                    alterarSaldoNoCSV (cpf conta) newSaldo
+                    putStrLn "Compra realizada!"
+                else if acao == "3" then do
+                    alteraAcoesNoCSV (cpf conta) $ head listaAcoes : head (tail listaAcoes) : (listaAcoes !! 2 + quantidade) : []
+                    alterarSaldoNoCSV (cpf conta) newSaldo
+                    putStrLn "Compra realizada!"
+                else
+                    putStrLn "Ação inválida"
+            else putStrLn "ok!"
 
 
-minhasAcoes :: [Acao] -> IO ()
-minhasAcoes acoes = do
+
+minhasAcoes :: Conta -> [Acao] -> IO ()
+minhasAcoes conta (x:y:z:xs) = do
     putStrLn "Atualmente, suas acoes estao assim:"
-    -- pega o array da mzr da conta
-    -- mostra
+    let listaAcoes = pegaAcoes (cpf conta)
+    putStrLn $ "1 - PixGet - Valor: R$ " ++ formatDouble (preco x) ++ " - Quantidade:"
+    print (listaAcoes !! 0)
+    putStrLn $ "2 - HaisCompany - Valor: R$ " ++ formatDouble (preco y) ++ " - Quantidade:"
+    print (listaAcoes !! 1)
+    putStrLn $ "3 - Muquiff - Valor: R$ " ++ formatDouble (preco z) ++ " - Quantidade:"
+    print (listaAcoes !! 2)
+    
 
-venderAcoes :: [Acao] -> IO ()
-venderAcoes (x:y:z:xs) = do
-    minhasAcoes (x:y:z:xs)
+venderAcoes :: Conta -> [Acao] -> IO ()
+venderAcoes conta (x:y:z:xs) = do
+    minhasAcoes conta (x:y:z:xs)
     putStrLn "Qual acao voce deseja vender? (Responda com Id Valido)"
     input <- getLine
     let acao = input
@@ -76,25 +93,27 @@ venderAcoes (x:y:z:xs) = do
     putStrLn "Continuar? (s/n)"
     input <- getLine
     let continua = input
-    if continua == "s" then
-        if acao == "1" then
-            -- tira da conta valor
-            -- pega o array de acoes na posição 0 e add quantidade
-            putStrLn "Venda Realizada!"
-        else if acao == "2" then
-            -- tira da conta valor
-            -- pega o array de acoes na posição 1 e add quantidade
-            putStrLn "Venda Realizada!"
-        else if acao == "3" then
-            -- tira da conta valor
-            -- pega o array de acoes na posição 2 e add quantidade
-            putStrLn "Venda Realizada!"
+    let listaAcoes = pegaAcoes (cpf conta)
+    let newSaldo = (saldo conta) + valor
+    if continua == "s" then do
+        if acao == "1" then do
+            alteraAcoesNoCSV (cpf conta) $ (listaAcoes !! 0 - quantidade) : tail listaAcoes
+            alterarSaldoNoCSV (cpf conta) newSaldo
+            putStrLn "Venda realizada!"
+        else if acao == "2" then do
+            alteraAcoesNoCSV (cpf conta) $ head listaAcoes : (listaAcoes !! 1 - quantidade) : tail (tail listaAcoes)
+            alterarSaldoNoCSV (cpf conta) newSaldo
+            putStrLn "Venda realizada!"
+        else if acao == "3" then do
+            alteraAcoesNoCSV (cpf conta) $ head listaAcoes : head (tail listaAcoes) : (listaAcoes !! 2 - quantidade) : []
+            alterarSaldoNoCSV (cpf conta) newSaldo
+            putStrLn "Venda realizada!"
         else
-            putStrLn "Acao invalida"
+            putStrLn "Ação inválida"
     else putStrLn "ok!"
 
-recuperarDividendos :: [Acao] -> IO ()
-recuperarDividendos (x:y:z:xs) = do
+recuperarDividendos :: Conta -> [Acao] -> IO ()
+recuperarDividendos conta (x:y:z:xs) = do
     putStrLn "Atualmente, suas funções ja pagaram em dividendos: R$"
     -- pega o array do cara e multiplica [0] com x [1] com y e [2] com z
     putStrLn "Retirando Este Valor..."
@@ -103,7 +122,7 @@ recuperarDividendos (x:y:z:xs) = do
 
 sair :: [Acao] -> IO ()
 sair acoes = do
-    let linhas = map (\acao -> [show $ idAcao acao, nome acao, printf "%.2f" (preco acao), printf "%.2f" (dividendYeld acao) ++ "\n"]) acoes
+    let linhas = map (\acao -> [show $ idAcao acao, nomeAcao acao, printf "%.2f" (preco acao), printf "%.2f" (dividendYeld acao) ++ "\n"]) acoes
     escreverCSV "./Investimento/acoes.csv" linhas
 
 
