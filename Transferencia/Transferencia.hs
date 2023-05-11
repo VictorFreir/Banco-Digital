@@ -1,3 +1,5 @@
+module Transferencia.Transferencia where
+
 import Models.Conta as Conta
 import Data.Time.Clock (getCurrentTime, UTCTime)
 
