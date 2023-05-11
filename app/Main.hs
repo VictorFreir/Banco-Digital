@@ -2,6 +2,24 @@ module Main where
 
 import Investimento.MenuAcoes
 import Database.Database (pegaContaPeloCPF recordParaConta pegaContaDoCSV)
+import qualified System.Process as SP
+
+
+menu :: String -> IO()
+menu cpf = do 
+    print "Bem vindo, DigiBank!"
+    exibeFuncionalidades
+    
+    let contas_records = pegaContaDoCSV "db.csv"
+    let contas = recordParaConta contas_records
+    let conta = pegaContaPeloCPF cpf contas
+
+    input <- getLine
+    let funcionalidadeID = input
+    limpaConsole
+    selecionaFuncionalidade funcionalidadeID conta
+    
+    menu cpf
 
 exibeFuncionalidades :: IO()
 exibeFuncionalidades = do
@@ -33,18 +51,7 @@ selecionaFuncionalidade "7" conta = do
 selecionaFuncionalidade _ = do 
     putStrLn "A opcao selecionada e invalida"
 
-menu :: String -> IO()
-menu cpf = do 
-    print "Bem vindo, DigiBank!"
-    exibeFuncionalidades
-    
-    let contas_records = pegaContaDoCSV "db.csv"
-    let contas = recordParaConta contas_records
-    let conta = pegaContaPeloCPF cpf contas
-
-    input <- getLine
-    let funcionalidadeID = input
-    selecionaFuncionalidade funcionalidadeID conta
-    
-    menu cpf
-
+limpaConsole :: IO ()
+limpaConsole = do
+  _ <- SP.system "reset"
+  return ()
