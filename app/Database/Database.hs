@@ -24,6 +24,20 @@ criaContaNoCSV diretorioDoCSV conta = do
     hPutStr f p
     hClose f
 
+alterarEmprestimoNoCSV :: String -> Emprestimo -> IO()
+alterarEmprestimoNoCSV cpfDaConta novoEmprestimo = do
+  let path = "db.csv"
+  let listaDeContasEmRecord = pegaContaDoCSV path
+  let listaDeContas = recordParaConta listaDeContasEmRecord
+  let contaOriginal = filtraContaPeloCPF cpfDaConta listaDeContas
+  let contaAlterada = contaOriginal { emprestimo = novoEmprestimo }
+  let novaListaDeContas = removeContaPeloCPF cpfDaConta listaDeContas ++ [contaAlterada]
+  let listaDeContasCSV = "identificador,nome,numeroConta,cpf,dataNascimento,endereco,senha,perguntaSecreta,respostaSecreta,saldo,acao1,acao2,acao3,valorTotal,proximaParcela,dataProximaParcela,quantParcelasRestantes,taxaJuros" ++ listaDeContaParaCSV novaListaDeContas
+
+  B.writeFile "tmp.csv" $ BC.pack listaDeContasCSV
+  removeFile path
+  renameFile "tmp.csv" path
+
 pegaContaDoCSV :: String -> [Record]
 pegaContaDoCSV path = do
     let file = unsafePerformIO( readFile path )
