@@ -1,6 +1,6 @@
 module Investimento.MenuAcoes where
 
-
+import Database.Database
 import Investimento.Acoes
 import Investimento.Rendimento
 import Investimento.Funcionalidades 
@@ -17,39 +17,39 @@ exibeFuncionalidadesAcoes = do
     putStrLn "  5- Resgatar Dividendos"
     putStrLn "  6- Sair"
 
-selecionaFuncionalidadeAcoes :: String -> [Acao] -> IO()
-selecionaFuncionalidadeAcoes "1" acoes = do 
+selecionaFuncionalidadeAcoes :: String -> Conta -> [Acao] -> IO()
+selecionaFuncionalidadeAcoes "1" conta acoes = do 
     putStrLn "Mostra de Acoes"
     printAcoes acoes
-    execucaoRecur acoes
-selecionaFuncionalidadeAcoes "2" acoes = do
+    execucaoRecur conta acoes
+selecionaFuncionalidadeAcoes "2" conta acoes = do
     putStrLn "Comprar Acoes"
     comprarAcoes acoes
-    execucaoRecur acoes
-selecionaFuncionalidadeAcoes "3" acoes = do
+    execucaoRecur conta acoes
+selecionaFuncionalidadeAcoes "3" conta acoes = do
     putStrLn "Vender Acoes"
     venderAcoes acoes
-    execucaoRecur acoes
-selecionaFuncionalidadeAcoes "4" acoes = do
+    execucaoRecur conta acoes
+selecionaFuncionalidadeAcoes "4" conta acoes = do
     putStrLn "Suas acoes:"
     minhasAcoes acoes
-    execucaoRecur acoes
-selecionaFuncionalidadeAcoes "5" acoes = do
+    execucaoRecur conta acoes
+selecionaFuncionalidadeAcoes "5" conta acoes = do
     putStrLn "Recuperar Dividendos:"
     recuperarDividendos acoes
-    execucaoRecur acoes
-selecionaFuncionalidadeAcoes "6" acoes = do
+    execucaoRecur conta acoes
+selecionaFuncionalidadeAcoes "6" conta acoes = do
     putStrLn "Saindo."
     sair acoes
 
-execucaoRecur :: [Acao] -> IO()
-execucaoRecur acoes = do
+execucaoRecur :: Conta -> [Acao] -> IO()
+execucaoRecur conta acoes = do
     putStrLn "O que deseja Fazer Agora?"
     exibeFuncionalidadesAcoes
     input <- getLine
     let acao = input
     newAcao <- atualizaValorAcao acoes
-    selecionaFuncionalidadeAcoes acao newAcao
+    selecionaFuncionalidadeAcoes acao conta newAcao
     
 controleAcoes :: Conta -> IO ()
 controleAcoes conta = do
@@ -57,4 +57,4 @@ controleAcoes conta = do
     exibeFuncionalidadesAcoes
     input <- getLine
     let acao = input
-    selecionaFuncionalidadeAcoes acao acoes
+    selecionaFuncionalidadeAcoes acao conta acoes

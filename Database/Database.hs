@@ -17,8 +17,9 @@ import Data.Time.Clock (UTCTime)
 import Data.Time (UTCTime)
 import GHC.Base (Float)
 
-criaContaNoCSV :: String  -> Conta -> IO()
-criaContaNoCSV diretorioDoCSV conta = do
+criaContaNoCSV :: Conta -> IO()
+criaContaNoCSV conta = do
+    let diretorioDoCSV = "db.csv"
     let p = contaParaCSV conta
     f <- openFile diretorioDoCSV AppendMode
     hPutStr f p

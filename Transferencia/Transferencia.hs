@@ -1,5 +1,6 @@
 module Transferencia.Transferencia where
 
+import Database.Database
 import Models.Conta as Conta
 import Data.Time.Clock (getCurrentTime, UTCTime)
 
@@ -8,67 +9,45 @@ import Database.Database (pegaContaPeloCPF, recordParaConta, pegaContaDoCSV)
 
 menuTransferencia :: Conta -> IO ()
 menuTransferencia contaAtual = do
-    putStrLn "Bem vindo a área de transferências!"
+    putStrLn "Bem vindo a area de transferencias!"
     putStrLn "Informe o valor a ser transferido: "
-    valor <- readLine :: Float
-    if valor < (show saldo contaAtual) then do
-        putStrLn "Para quem vai ser transferido?\nDigite o CPF apenas com números"
-        cpf <- getLine
-        let contaDestinataria = encontraContaDestinataria cpf
-        if (contaDestinataria cpf == 0) then erroCpf else transferir contaAtual contaDestinataria valor
+    input <- getLine
+    let valor = read input
+    if valor <= (saldo contaAtual) then do
+        putStrLn "Para quem vai ser transferido?\nDigite o CPF apenas com numeros"
+        input2 <- getLine
+        let cpforigem = input2
+        let contaDestinataria = pegaContaPeloCPF cpforigem
+        if (cpf contaDestinataria) == "" then erroCpf else transferir contaAtual contaDestinataria valor
     else erroValor
-
-encontraContaDestinataria :: String -> Conta
-encontraContaDestinataria cpf = contaDestinaria where
-    contaDestinataria = pegaContaPeloCPF cpf
 
 erroCpf :: IO()
 erroCpf = do
-    print "O CPF informado não corresponde a nenhuma conta."
+    print "O CPF informado nao corresponde a nenhuma conta."
 
 erroValor :: IO()
 erroValor = do
-    print "O valor desejado é superior ao valor disponível em sua conta!"
+    print "O valor desejado e superior ao valor disponivel em sua conta!"
 
-transferir :: Conta -> Conta -> Float -> String
+transferir :: Conta -> Conta -> Float -> IO ()
 transferir contaSaida contaChegada valor = do
     let novaContaSaida = subtraiValor contaSaida valor
         novaContaChegada = somaValor contaChegada valor
     salvaConta novaContaSaida
     salvaConta novaContaChegada
-    return "Transferência realizada com sucesso!"
+    putStrLn "Transferencia realizada com sucesso!"
 
 subtraiValor :: Conta -> Float -> Conta
 subtraiValor conta valor = do
-    let identificadorConta = (show $ identificador conta)
-    let nomeConta = (show $ nome conta)
-    let cpfConta = (show $ cpf conta)
-    let numeroContaConta = (show $ numeroConta conta)
-    let dataNascimentoConta = (show $ dataNascimento conta)
-    let enderecoConta = (show $ endereco conta)
-    let senhaConta = (show $ senha conta)
-    let perguntaSecretaConta = (show $ perguntaSecreta conta)
-    let respostaSecretaConta = (show $ respostaSecreta conta)
-    let saldoConta = (show $ saldo conta) - valor
-    Conta identificadorConta nomeConta cpfConta numeroContaConta dataNascimentoConta enderecoConta senhaConta perguntaSecretaConta respostaSecretaConta saldoConta
+    conta {saldo = (saldo conta) - valor}
 
 somaValor :: Conta -> Float -> Conta
 somaValor conta valor = do
-    let identificadorConta = (show $ identificador conta)
-    let nomeConta = (show $ nome conta)
-    let cpfConta = (show $ cpf conta)
-    let numeroContaConta = (show $ numeroConta conta)
-    let dataNascimentoConta = (show $ dataNascimento conta)
-    let enderecoConta = (show $ endereco conta)
-    let senhaConta = (show $ senha conta)
-    let perguntaSecretaConta = (show $ perguntaSecreta conta)
-    let respostaSecretaConta = (show $ respostaSecreta conta)
-    let saldoConta = (show $ saldo conta) + valor
-    Conta identificadorConta nomeConta cpfConta numeroContaConta dataNascimentoConta enderecoConta senhaConta perguntaSecretaConta respostaSecretaConta saldoConta
+    conta {saldo = (saldo conta) + valor}
 
-salvaConta :: Conta -> IO
-salvaConta = do
-    putStrLn "Conta salva com sucesso"
+salvaConta :: Conta -> IO ()
+salvaConta conta = alterarSaldoNoCSV (cpf conta) (saldo conta)
+    
 
 pegarDiaAtual :: IO UTCTime
 pegarDiaAtual = getCurrentTime >>= return

@@ -1,5 +1,6 @@
 module Investimento.Funcionalidades where
 
+import Database.Database
 import System.Directory
 import Data.List (intercalate)
 import System.IO (withFile, IOMode(WriteMode), hSetNewlineMode, universalNewlineMode, hPutStr)

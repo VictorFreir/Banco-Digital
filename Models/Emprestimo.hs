@@ -8,4 +8,4 @@ data Emprestimo = Emprestimo {
     dataProximaParcela :: UTCTime,
     quantParcelasRestantes :: Int,
     taxaJuros :: Float
-} deriving (Show, Generic)
+} deriving (Show)

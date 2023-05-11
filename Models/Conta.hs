@@ -1,5 +1,4 @@
 module Models.Conta where
-
 import GHC.Generics    
 import Data.Time.Clock (UTCTime)
 import Data.Time (UTCTime)
@@ -19,4 +18,4 @@ data Conta = Conta {
     saldo :: Float,
     acoes :: [Int],
     emprestimo :: Emprestimo
-} deriving (Show, Generic)
+} deriving (Show)
