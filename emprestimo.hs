@@ -6,10 +6,8 @@ import Data.Time.Clock (getCurrentTime, utctDay)
 import Data.ByteString (getLine)
 
 
-
 menu :: Conta -> IO()
 menu conta = if (temEmprestimo conta) then menuSolitica conta else menuConsulta conta
-
 
 menuSolitica :: Conta -> IO()
 menuSolitica conta = do 
@@ -17,6 +15,7 @@ menuSolitica conta = do
     if analiseCredito conta then do
         valorEmprestimo <- solicitarValor conta
         putStrLn "O valor disponível para você é " valorEmprestimo
+        valorEmprestimoAPagar <- calcularValorTotal
         putStrLn "Você deseja realizar o empréstimo?"
         putStrLn "Digite 1, caso sim"
         putStrLn "Digite 2, caso não"
@@ -29,7 +28,6 @@ menuSolitica conta = do
 
     else do
         putStrLn "Atualmente, não temos propostas de empréstimo para o seu perfil. "
-
 
 menuConsulta :: Conta -> IO()
 menuConsulta conta = do
@@ -49,7 +47,7 @@ menuConsulta conta = do
     if (opcao == "1") then pagarParcela conta else naoPagarParcela
 
 calcularFatura :: Emprestimo -> IO ()
-calcularFatura emprestimo = (valorTotal emprestimo) + ((valorTotal emprestimo)* mesesAtrasados emprestimo)
+calcularFatura emprestimo = if ((mesesAtrasados emprestimo) > 0) then (proximaParcela emprestimo) + ((proximaParcela emprestimo) * mesesAtrasados emprestimo) else (proximaParcela emprestimo)
 
 mesesAtrasados :: Emprestimo -> utctDay
 mesesAtrasados emprestimo = mesesEntreDatas (pegarDiaAtual) (dataProximaParcela emprestimo)
@@ -68,20 +66,15 @@ mesesEntreDatas d1 d2 = diffMonths
         diffYears = fromIntegral (y2 - y1)
         diffMonths = (diffYears * 12) + fromIntegral (m2 - m1)
 
---solicitarEmprestimo :: String -> IO
--- mostrar ao usuario se ele pode ter um emprestimo, se puder retorne quanto
--- o valor do emprestimo tem que ser multiplo de 100
--- vai criar o emprestimo se solicitado for
+solicitarValor :: Conta -> Float
+soliticarValor conta = (valor conta) * 10
 
+solicitarEmprestimo :: Conta -> Float -> IO
+solicitarEmprestimo conta valor = do
+    let emprestimo = Emprestimo valor (valor/12) (proximaParcelaData pegarDiaAtual) 12 0.15
 
---consultarEmprestimo :: String -> IO
--- vai retornar informações sobre o emprestimo
--- vai dar a opção de pagar o emprestimo
--- vai calcular se está atrasado e aplicar juros
-
---analiseCredito :: String -> Float
--- vai fazer a analise do credito da pessoa para verificar se ela pode ter um empresimo
--- se a media de gastos mensais dele for superior a 500 ele pode fazer um emprestimo
+analiseCredito :: Conta -> Float
+analiseCredito conta = if (saldo conta) >= 100 then True else False
 
 pagarParcela :: Conta -> Conta
 pagarParcela conta = contaAtualizada where
@@ -90,18 +83,14 @@ pagarParcela conta = contaAtualizada where
         let emprestimoAtualizado = Emprestimo 0.0 0.0 pegarDiaAtual 0 0.0
     else do
         let emprestimoAtualizado = Emprestimo (valorTotal emprestimo) (proximaParcela emprestimo) (novaDataParcela (dataProximaParcela emprestimo)) (quantParcelasRestantes empresitmo)-1 (taxaJuros emprestimo)
-    let identificadorConta = identificador conta
-    let nomeConta = nome conta
-    let cpfConta = cpf conta
-    let numeroContaConta = numeroConta conta
-    let dataNascimentoConta = dataNascimento conta
-    let enderecoConta = endereco conta
-    let senhaConta = senha conta
-    let perguntaSecretaConta = perguntaSecreta conta
-    let respostaSecretaConta = respostaSecreta conta
-    let saldoConta = saldo conta 
-    contaAtualizada = Conta identificadorConta nomeConta cpfConta numeroContaConta dataNascimentoConta enderecoConta senhaConta perguntaSecretaConta respostaSecretaConta saldoConta emprestimoAtualizado
-    
+    contaAtualizada = conta {emprestimo = emprestimoAtualizado}
 
-main :: IO()
-main = menu Conta 0 "nome" "numero" pegarDiaAtual "endereco" "1234" "pergunta" "resposta" 0.0
+calcularValorTotal :: Conta -> Float
+calcularValorTotal conta = (solicitarValor conta) * 1.15
+
+proximaParcelaData :: UTCTime -> UTCTime
+proximaParcela data = addUTCTime (30*24*60*60) data
+
+naoPagarParcela :: IO()
+naoPagarParcela = do
+    print "A Parcela não foi paga!"
