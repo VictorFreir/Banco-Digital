@@ -71,7 +71,7 @@ venderAcoes (x:y:z:xs) = do
                 else if acao == "2" then (preco y) * fromIntegral quantidade
                 else if acao == "3" then (preco z) * fromIntegral quantidade
                 else 0 -- Define um valor padrão para a variável valor
-    putStrLn ("Nesta venda voce vai lucrar: R$ " ++ formatDouble valor)
+    putStrLn ("Nesta venda voce vai receber: R$ " ++ formatDouble valor)
     putStrLn "Continuar? (s/n)"
     input <- getLine
     let continua = input
