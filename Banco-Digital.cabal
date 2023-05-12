@@ -37,7 +37,7 @@ executable Banco-Digital
         Models.Emprestimo
         Text.CSV
         Saque.Saque
-        Emprestimo.Emprestimo
+        Emprestimo.MetodosEmprestimo
     -- LANGUAGE extensions used by modules in this package.
     -- other-extensions:
     build-depends:    

@@ -12,16 +12,16 @@ import Database.Database
 
 sacar :: Conta -> IO()
 sacar contaAtual = do
-    putStrLn "O seu saldo atual e: " ++ show saldo contaAtual
+    putStrLn ("Saldo Atual: R$ " ++ show (pegaSaldo (cpf contaAtual)))
     putStrLn "Informe o valor que deseja sacar: "
-    valor <- readLine :: Float
+    input <- getLine 
+    let valor = read input
     if (saldo contaAtual > valor) 
     then do
         subtraiValor contaAtual valor
         putStrLn "Saque realizado com sucesso!"
     else do 
         erroValor
-        sacar
 
 erroValor :: IO()
 erroValor = do

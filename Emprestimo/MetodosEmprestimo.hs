@@ -1,11 +1,11 @@
-module Emprestimo.Emprestimo where
+module Emprestimo.MetodosEmprestimo where
 
 import Models.Emprestimo 
 
 import Models.Conta as Conta
 import Data.Time.Calendar
 import GHC.Base (IO)
-import Data.Time.Clock (getCurrentTime, utctDay)
+import Data.Time.Clock (getCurrentTime, utctDay, UTCTime)
 import Data.ByteString (getLine)
 import Database.Database
 
@@ -19,7 +19,7 @@ menuSolitica conta = do
         valorEmprestimo <- solicitarValor conta
         putStrLn "O valor disponível para você é " valorEmprestimo
         valorEmprestimoAPagar <- calcularValorTotal
-        putStrLn "você pagará " (show % valorEmprestimoAPagar)
+        putStrLn "você pagará " (show valorEmprestimoAPagar)
         putStrLn "Você deseja realizar o empréstimo?"
         putStrLn "Digite 1, caso sim"
         putStrLn "Digite 2, caso não"
@@ -54,8 +54,11 @@ menuConsulta conta = do
 calcularFatura :: Emprestimo -> IO ()
 calcularFatura emprestimo = if ((mesesAtrasados emprestimo) > 0) then (proximaParcela emprestimo) + ((proximaParcela emprestimo) * mesesAtrasados emprestimo) else (proximaParcela emprestimo)
 
-mesesAtrasados :: Emprestimo -> utctDay
-mesesAtrasados emprestimo = mesesEntreDatas (pegarDiaAtual) (dataProximaParcela emprestimo)
+mesesAtrasados :: Emprestimo -> Integer
+mesesAtrasados emprestimo = do 
+    diaAtual <- pegarDiaAtual
+    let dayAi = utctDay (dataProximaParcela emprestimo)
+    mesesEntreDatas diaAtual dayAi
 
 pegarDiaAtual :: IO Day
 pegarDiaAtual = utctDay <$> getCurrentTime
@@ -72,31 +75,34 @@ mesesEntreDatas d1 d2 = diffMonths
         diffMonths = (diffYears * 12) + fromIntegral (m2 - m1)
 
 solicitarValor :: Conta -> Float
-soliticarValor conta = (valor conta) * 10
+solicitarValor conta = (saldo conta) * 10.0
 
-solicitarEmprestimo :: Conta -> Float -> IO
+solicitarEmprestimo :: Conta -> Float -> IO ()
 solicitarEmprestimo conta valor = do
-    let novoEmprestimo = Emprestimo valor (valor/12) (proximaParcelaData pegarDiaAtual) 12 0.15
+    diaAtual <- pegarDiaAtual
+    let novoEmprestimo = Emprestimo valor (valor/12) (proximaParcelaData diaAtual) 12 0.15
     let cpfConta = (cpf conta)
     alterarEmprestimoNoCSV cpfConta novoEmprestimo
 
 analiseCredito :: Conta -> Float
 analiseCredito conta = if (saldo conta) >= 100 then True else False
 
-pagarParcela :: Conta -> Conta
-pagarParcela conta = contaAtualizada where
+pagarParcela :: Conta -> IO()
+pagarParcela conta = do
     let emprestimo = emprestimo conta
     if ((quantParcelasRestantes emprestimo) == 1) then do
         let emprestimoAtualizado = Emprestimo 0.0 0.0 pegarDiaAtual 0 0.0
+        alterarEmprestimoNoCSV (cpf conta) emprestimoAtualizado
     else do
         let emprestimoAtualizado = Emprestimo (valorTotal emprestimo) (proximaParcela emprestimo) (novaDataParcela (dataProximaParcela emprestimo)) (quantParcelasRestantes empresitmo)-1 (taxaJuros emprestimo)
-    alterarEmprestimoNoCSV (cpf conta) emprestimoAtualizado
+        alterarEmprestimoNoCSV (cpf conta) emprestimoAtualizado
+    
 
 calcularValorTotal :: Conta -> Float
 calcularValorTotal conta = (solicitarValor conta) * 1.15
 
 proximaParcelaData :: UTCTime -> UTCTime
-proximaParcela data = addUTCTime (30*24*60*60) data
+proximaParcelaData dataProxima = addUTCTime (30*24*60*60) dataProxima
 
 naoPagarParcela :: IO()
 naoPagarParcela = do

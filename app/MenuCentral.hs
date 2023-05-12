@@ -7,7 +7,7 @@ import Database.Database (pegaContaPeloCPF, recordParaConta, pegaContaDoCSV, peg
 import qualified System.Process as SP
 import Transferencia.Transferencia (menuTransferencia) 
 import Saque.Saque (sacar)
-import Emprestimo.Emprestimo (menuEmprestimo)
+import Emprestimo.MetodosEmprestimo (menuEmprestimo)
 
 
 menu :: String -> IO()
