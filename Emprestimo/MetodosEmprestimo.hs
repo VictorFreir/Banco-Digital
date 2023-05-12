@@ -66,13 +66,14 @@ pegarDiaAtual = utctDay <$> getCurrentTime
 temEmprestimo :: Emprestimo -> Bool
 temEmprestimo emprestimo = (read $ valorTotal emprestimo) /= 0
 
-mesesEntreDatas :: Day -> Day -> Integer
-mesesEntreDatas d1 d2 = diffMonths
-    where
-        (y1, m1, _) = toGregorian d1
-        (y2, m2, _) = toGregorian d2
-        diffYears = fromIntegral (y2 - y1)
-        diffMonths = (diffYears * 12) + fromIntegral (m2 - m1)
+mesesEntreDatas :: UTCTime -> UTCTime -> Int
+mesesEntreDatas d1 d2 =
+  let (y1, m1, _) = toGregorian $ utctDay d1
+      (y2, m2, _) = toGregorian $ utctDay d2
+      monthsDiff = (y1 - y2) * 12 + (fromIntegral m1 - fromIntegral m2)
+      -- ajuste caso d2 seja anterior a d1
+      sign = if monthsDiff < 0 then -1 else 1
+  in sign * monthsDiff
 
 solicitarValor :: Conta -> Float
 solicitarValor conta = (saldo conta) * 10.0

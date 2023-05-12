@@ -114,10 +114,11 @@ venderAcoes conta (x:y:z:xs) = do
 
 recuperarDividendos :: Conta -> [Acao] -> IO ()
 recuperarDividendos conta (x:y:z:xs) = do
-    putStrLn "Atualmente, suas funções ja pagaram em dividendos: R$"
-    -- pega o array do cara e multiplica [0] com x [1] com y e [2] com z
+    let listaAcoes = pegaAcoes (cpf conta)
+    --let dividendos = (preco x * (fromIntegral listaAcoes !! 0)) + (preco y * (fromIntegral listaAcoes !! 1)) + (preco z * (fromIntegral listaAcoes !! 2))
+    --putStrLn "Atualmente, suas funções ja pagaram em dividendos: R$ " ++ formatDouble dividendos
     putStrLn "Retirando Este Valor..."
-    -- adiciona na conta o valor
+    --alterarSaldoNoCSV (cpf conta) ((saldo conta) + dividendos)
     putStrLn "Valor Retirado, conferir na conta."
 
 sair :: [Acao] -> IO ()

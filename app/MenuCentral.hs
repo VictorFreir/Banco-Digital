@@ -7,7 +7,6 @@ import Database.Database (pegaContaPeloCPF, recordParaConta, pegaContaDoCSV, peg
 import qualified System.Process as SP
 import Transferencia.Transferencia (menuTransferencia) 
 import Saque.Saque (sacar)
-import Emprestimo.MetodosEmprestimo (menuEmprestimo)
 
 
 menu :: String -> IO()
@@ -47,7 +46,7 @@ selecionaFuncionalidade "4" conta = do
 selecionaFuncionalidade "5" conta = do 
     putStrLn "Poupança selecionada"
 selecionaFuncionalidade "6" conta = do 
-    menuEmprestimo conta
+    putStrLn "Emprestimo selecionado"
 selecionaFuncionalidade "7" conta = do 
     controleAcoes conta
 selecionaFuncionalidade "8" conta = do 

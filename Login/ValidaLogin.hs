@@ -7,8 +7,8 @@ validaCpfLogin :: String -> IO()
 validaCpfLogin cpf = do
   if all isDigit cpf && length cpf == 11
     then do
-      if (pegaSenha cpf == 0)
-        putStrLn "Cpf não cadastrado" >> menuCentral
+      if (pegaSenha cpf == 0) then
+        putStrLn "Cpf não cadastrado" >> return()
       else do
         putStrLn "CPF válido"
     else do
