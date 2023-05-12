@@ -1,5 +1,6 @@
 module Transferencia.Transferencia where
 
+import Extrato.PegaExtrato (cadastraNovaTransf)
 import Database.Database
 import Models.Conta as Conta
 import Data.Time.Clock (getCurrentTime, UTCTime)
@@ -35,6 +36,9 @@ transferir contaSaida contaChegada valor = do
         novaContaChegada = somaValor contaChegada valor
     salvaConta novaContaSaida
     salvaConta novaContaChegada
+    let dadosTransf = (cpf contaSaida) ++ "-" ++ (cpf contaChegada) ++ "-" ++ (show valor) ++ "-" ++(show pegarDiaAtual)
+    cadastraNovaTransf dadosTransf
+
     putStrLn "Transferencia realizada com sucesso!"
 
 subtraiValor :: Conta -> Float -> Conta
