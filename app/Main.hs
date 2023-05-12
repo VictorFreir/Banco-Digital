@@ -3,6 +3,7 @@ module Main where
 import Login.MenuCadastro
 import Login.MenuLogin
 import Models.Conta
+import Login.RecuperaSenha
 
 main :: IO ()
 main = menu
@@ -18,7 +19,7 @@ menu = do
   case opcao of
      "1" -> cadastrarCliente >> menu
      "2" -> fazerLogin >> menu
-     "3" -> recuperarSenha >> menu
+     "3" -> recuperaSenha >> menu
      "4" -> putStrLn "Saindo..." >> return()
      _   -> putStrLn "Opção inválida." >> menu
 

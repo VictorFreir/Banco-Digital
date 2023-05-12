@@ -1,4 +1,4 @@
-module MenuCentral where
+module MenuCentral.MenuCentral where
 
 import System.Exit
 import Models.Conta
@@ -60,7 +60,7 @@ limpaConsole = do
   _ <- SP.system "reset"
   return ()
 
-menuCentral :: IO()
-menuCentral = do
+menuCentral :: String -> IO()
+menuCentral cpf = do
     putStrLn "Bem vindo, DigiBank!" 
-    menu "11111111111"
+    menu cpf

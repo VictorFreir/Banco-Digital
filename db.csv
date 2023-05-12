@@ -1,4 +1,8 @@
 identificador,nome,numeroConta,cpf,dataNascimento,endereco,senha,perguntaSecreta,respostaSecreta,saldo,acao1,acao2,acao3,valorTotal,proximaParcela,dataProximaParcela,quantParcelasRestantes,taxaJuros
-1,Raniel,9456123,33333333333,"21/12/2001",BIU 302,mypass,nome do chacorro, gato,7800.0,30,2,1,0.0,0.0,2020-01-01 00:00:00 UTC,0,0.0
 2,Helder,9456124,11111111111,"05/05/1999",casa,123,nome da vo, marta,3500.0,0,0,0,0.0,0.0,2020-01-01 00:00:00 UTC,0,0.0
 3,Abraao,9456125,22222222222,"10/04/2003",casa,123,anime favorito,naruto,2200.0,0,0,0,0.0,0.0,2020-01-01 00:00:00 UTC,0,0.0
+44444,vitor,44444,44444444444,"04/01/2003",biu,vitor123,teste,1,0.0,0,0,0,0.0,0.0,2050-01-01 00:00:00 UTC,0,0.0
+55555,abraao,55555,55555555555,"10/04/2003",ufcg,teste1,teste,1,0.0,0,0,0,0.0,0.0,2050-01-01 00:00:00 UTC,0,0.0
+1,Raniel,9456123,33333333333,"21/12/2001",BIU 302,mypass,nome do chacorro, gato,3817.4224,30,2,0,0.0,0.0,2020-01-01 00:00:00 UTC,0,0.0
+929,ab,929,929,"12",ab,123,a,b,0.0,0,0,0,0.0,0.0,2050-01-01 00:00:00 UTC,0,0.0
+66666,everton,66666,66666666666,"01/01/1990",ufcg,projeto-haskell,cadeira,plp,3000.0,0,0,0,0.0,0.0,2050-01-01 00:00:00 UTC,0,0.0

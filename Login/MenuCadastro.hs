@@ -1,7 +1,7 @@
 module Login.MenuCadastro where
 
 import Login.ValidaCadastro
-import Models.Conta
+import Models.Conta as Conta
 import Models.Emprestimo
 import Login.EmprestimoDefault as EmprestimoDefault
 --import Login.SalvaConta
@@ -27,7 +27,6 @@ cadastrarCliente = do
   validaRenda rendaMensalStr
   putStrLn "Crie uma senha para sua conta"
   senha <- getLine
-  validaSenha senha
   putStrLn "Crie uma pergunta secreta para sua conta"
   perguntaSecreta <- getLine
   validaPerguntaSecreta perguntaSecreta
@@ -39,7 +38,7 @@ cadastrarCliente = do
   let saldo = 0.0
   let acoes = [0, 0, 0]
   let emprestimo = emprestimoDefault
-  let conta = Conta identificador nome conta cpf dataNascimento endereco senha perguntaSecreta respostaSecreta saldo acoes emprestimo
+  let objConta = Conta identificador nome conta cpf dataNascimento endereco senha perguntaSecreta respostaSecreta saldo acoes emprestimo
   --let lista = [conta]
-  criaContaNoCSV conta
+  criaContaNoCSV objConta
   putStrLn "Cadastro realizado com sucesso"

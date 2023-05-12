@@ -6,7 +6,7 @@ fazerLogin :: IO ()
 fazerLogin = do
   putStrLn "Digite seu CPF:"
   cpf <- getLine
-  --validaCpfLogin cpf
+  validaCpfLogin cpf
   putStrLn "Digite sua senha:"
   senha <- getLine
-  putStrLn  "Efetuando login"
+  validaSenhaLogin cpf senha
