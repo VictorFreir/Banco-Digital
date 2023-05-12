@@ -36,8 +36,10 @@ transferir contaSaida contaChegada valor = do
         novaContaChegada = somaValor contaChegada valor
     salvaConta novaContaSaida
     salvaConta novaContaChegada
-    let dadosTransf = (cpf contaSaida) ++ "-" ++ (cpf contaChegada) ++ "-" ++ (show valor) ++ "-" ++(show pegarDiaAtual)
-    cadastraNovaTransf dadosTransf
+    let dadosTransfSaida = (cpf contaSaida) ++ "-" ++ (cpf contaChegada) ++ "-" ++ (show ((-1)*valor)) ++ "-" ++(show pegarDiaAtual)
+    cadastraNovaTransf dadosTransfSaida
+    let dadosTransfChegada = (cpf contaSaida) ++ "-" ++ (cpf contaChegada) ++ "-" ++ (show valor) ++ "-" ++(show pegarDiaAtual)
+    cadastraNovaTransf dadosTransfChegada
 
     putStrLn "Transferencia realizada com sucesso!"
 
