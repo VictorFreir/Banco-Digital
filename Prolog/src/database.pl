@@ -1,81 +1,51 @@
 :- use_module(library(csv)).
-
-% conta(ID, Nome, NumeroConta, CPF, DataNascimento, Endereco, Senha, PerguntaSecreta, RespostaSecreta, Saldo, Acao1, Acao2, Acao3, ValorTotal, ProximaParcela, DataProximaParcela, QtdParcelasRestantes, TaxaJuros).
-
+:- dynamic conta/18.
 
 id(1).
 incrementa_id :- retract(id(X)), Y is X + 1, assert(id(Y)).
 :- dynamic id/1.
 
-% Lendo arquivo CSV
-lerCSV(FilePath, File) :- csv_read_file(FilePath, File).
+conta(ID, Nome, NumeroConta, CPF, DataNascimento, Endereco, Senha, PerguntaSecreta, RespostaSecreta, Saldo, Acao1, Acao2, Acao3, ValorTotal, ProximaParcela, DataProximaParcela, QtdParcelasRestantes, TaxaJuros).
 
-exibirContasAux([]).
-exibirContasAux([row(ID, Nome, NumeroConta, CPF, DataNascimento, Endereco, Senha, PerguntaSecreta, RespostaSecreta, Saldo, Acao1, Acao2, Acao3, ValorTotal, ProximaParcela, DataProximaParcela, QtdParcelasRestantes, TaxaJuros)|T]) :-
-    write("ID:"), writeln(ID),
-    write("Nome: "), writeln(Nome),
-    write("Numero da conta: "), writeln(NumeroConta),
-    write("CPF: "), writeln(CPF),
-    write("Data de nascimento: "), writeln(DataNascimento),
-    write("Endereco: "), writeln(Endereco),
-    write("Senha: "), writeln(Senha),
-    write("Pergunta secreta: "), writeln(PerguntaSecreta),
-    write("Resposta secreta: "), writeln(RespostaSecreta),
-    write("Saldo: "), writeln(Saldo),
-    write("Acao 1: "), writeln(Acao1),
-    write("Acao 2: "), writeln(Acao2),
-    write("Acao 3: "), writeln(Acao3),
-    write("Valor total: "), writeln(ValorTotal),
-    write("Proxima parcela: "), writeln(ProximaParcela),
-    write("Data da proxima parcela: "), writeln(DataProximaParcela),
-    write("Quantidade de parcelas restantes: "), writeln(QtdParcelasRestantes),
-    write("Taxa de juros: "), writeln(TaxaJuros),
-    nl, exibirContasAux(T).
+lerCSV :-
+    csv_read_file('./Prolog/resources/db.csv', Rows, [functor(conta), arity(18)]),
+    maplist(assert, Rows).
 
-exibirContas() :-
-   lerCSV('./Prolog/resources/db.csv', [_|File]),
-   exibirContasAux(File).
-
-criaContaNoCSV(Nome, NumeroConta, CPF, DataNascimento, Endereco, Senha, PerguntaSecreta, RespostaSecreta, Saldo, Acao1, Acao2, Acao3, ValorTotal, ProximaParcela, DataProximaParcela, QtdParcelasRestantes, TaxaJuros) :-
-   id(ID), incrementa_id,
-   lerCSV('./Prolog/resources/db.csv', File),
-   append(File, [row(ID, Nome, NumeroConta, CPF, DataNascimento, Endereco, Senha, PerguntaSecreta, RespostaSecreta, Saldo, Acao1, Acao2, Acao3, ValorTotal, ProximaParcela, DataProximaParcela, QtdParcelasRestantes, TaxaJuros)], Saida),
-   csv_write_file('./Prolog/resources/db.csv', Saida).
-
-pegaContaPeloCPF(CPF) :- 
-    lerCSV('./Prolog/resources/db.csv', File),
-    pegaContaPeloCPFAux(File, CPF).
-
-pegaContaPeloCPFAux(File, CPF) :-
-    member(row(ID, Nome, NumeroConta, CPF, DataNascimento, Endereco, Senha, PerguntaSecreta, RespostaSecreta, Saldo, Acao1, Acao2, Acao3, ValorTotal, ProximaParcela, DataProximaParcela, QtdParcelasRestantes, TaxaJuros), File),
-    write('ID: '), writeln(ID),
-    write('Nome: '), writeln(Nome),
-    write('Numero da conta: '), writeln(NumeroConta),
-    write('CPF: '), writeln(CPF),
-    write('Data de nascimento: '), writeln(DataNascimento),
-    write('Endereco: '), writeln(Endereco),
-    write('Senha: '), writeln(Senha),
-    write('Pergunta secreta: '), writeln(PerguntaSecreta),
-    write('Resposta secreta: '), writeln(RespostaSecreta),
-    write('Saldo: '), writeln(Saldo),
-    write('Acao 1: '), writeln(Acao1),
-    write('Acao 2: '), writeln(Acao2),
-    write('Acao 3: '), writeln(Acao3),
-    write('Valor total: '), writeln(ValorTotal),
-    write('Proxima parcela: '), writeln(ProximaParcela),
-    write('Data da proxima parcela: '), writeln(DataProximaParcela),
-    write('Quantidade de parcelas restantes: '), writeln(QtdParcelasRestantes),
-    write('Taxa de juros: '), writeln(TaxaJuros),
-    nl.
-    
-    
-alterarSaldoNoCSV([], _, _, []).
-alterarSaldoNoCSV([row(ID, Nome, NumeroConta, CPF, DataNascimento, Endereco, Senha, PerguntaSecreta, RespostaSecreta, _, Acao1, Acao2, Acao3, ValorTotal, ProximaParcela, DataProximaParcela, QtdParcelasRestantes, TaxaJuros)|T], CPF, Saldo, [row(ID, Nome, NumeroConta, CPF, DataNascimento, Endereco, Senha, PerguntaSecreta, RespostaSecreta, Saldo, Acao1, Acao2, Acao3, ValorTotal, ProximaParcela, DataProximaParcela, QtdParcelasRestantes, TaxaJuros)|T]).
-alterarSaldoNoCSV([H|T], CPF, Saldo, [H|Out]) :- alterarSaldoNoCSV(T, CPF, Saldo, Out).
+criaConta(Nome, NumeroConta, CPF, DataNascimento, Endereco, Senha, PerguntaSecreta, RespostaSecreta, Saldo, Acao1, Acao2, Acao3, ValorTotal, ProximaParcela, DataProximaParcela, QtdParcelasRestantes, TaxaJuros) :-
+    id(ID), incrementa_id,
+    assert(conta(ID, Nome, NumeroConta, CPF, DataNascimento, Endereco, Senha, PerguntaSecreta, RespostaSecreta, Saldo, Acao1, Acao2, Acao3, ValorTotal, ProximaParcela, DataProximaParcela, QtdParcelasRestantes, TaxaJuros)).
 
 alterarSaldo(CPF, Saldo) :-
-   lerCSV('./Prolog/resources/db.csv', File),
-   alterarSaldoNoCSV(File, CPF, Saldo, Saida),
-   csv_write_file('./Prolog/resources/db.csv', Saida).
+    retract(conta(ID, Nome, NumeroConta, CPF, DataNascimento, Endereco, Senha, PerguntaSecreta, RespostaSecreta, _, Acao1, Acao2, Acao3, ValorTotal, ProximaParcela, DataProximaParcela, QtdParcelasRestantes, TaxaJuros)),
+    assert(conta(ID, Nome, NumeroConta, CPF, DataNascimento, Endereco, Senha, PerguntaSecreta, RespostaSecreta, Saldo, Acao1, Acao2, Acao3, ValorTotal, ProximaParcela, DataProximaParcela, QtdParcelasRestantes, TaxaJuros)).
 
+pegaContaPeloCPF(Id, Nome, NumeroConta, CPF, DataNascimento, Endereco, Senha, PerguntaSecreta, RespostaSecreta, Saldo, Acao1, Acao2, Acao3, ValorTotal, ProximaParcela, DataProximaParcela, QtdParcelasRestantes, TaxaJuros) :-
+    conta(Id, Nome, NumeroConta, CPF, DataNascimento, Endereco, Senha, PerguntaSecreta, RespostaSecreta, Saldo, Acao1, Acao2, Acao3, ValorTotal, ProximaParcela, DataProximaParcela, QtdParcelasRestantes, TaxaJuros).  
 
+pegaAcao1(CPF, Acao1) :-
+    conta(_, _, _, CPF, _, _, _, _, _, _, Acao1, _, _, _, _, _, _, _).
+
+pegaAcao2(CPF, Acao2) :-
+    conta(_, _, _, CPF, _, _, _, _, _, _, _, Acao2, _, _, _, _, _, _).
+
+pegaAcao3(CPF, Acao3) :-
+    conta(_, _, _, CPF, _, _, _, _, _, _, _, _, Acao3, _, _, _, _, _).
+
+alterarAcao1(CPF, Acao1) :-
+    retract(conta(ID, Nome, NumeroConta, CPF, DataNascimento, Endereco, Senha, PerguntaSecreta, RespostaSecreta, Saldo, _, Acao2, Acao3, ValorTotal, ProximaParcela, DataProximaParcela, QtdParcelasRestantes, TaxaJuros)),
+    assert(conta(ID, Nome, NumeroConta, CPF, DataNascimento, Endereco, Senha, PerguntaSecreta, RespostaSecreta, Saldo, Acao1, Acao2, Acao3, ValorTotal, ProximaParcela, DataProximaParcela, QtdParcelasRestantes, TaxaJuros)).
+
+alterarAcao2(CPF, Acao2) :-
+    retract(conta(ID, Nome, NumeroConta, CPF, DataNascimento, Endereco, Senha, PerguntaSecreta, RespostaSecreta, Saldo, Acao1, _, Acao3, ValorTotal, ProximaParcela, DataProximaParcela, QtdParcelasRestantes, TaxaJuros)),
+    assert(conta(ID, Nome, NumeroConta, CPF, DataNascimento, Endereco, Senha, PerguntaSecreta, RespostaSecreta, Saldo, Acao1, Acao2, Acao3, ValorTotal, ProximaParcela, DataProximaParcela, QtdParcelasRestantes, TaxaJuros)).
+
+alterarAcao3(CPF, Acao3) :-
+    retract(conta(ID, Nome, NumeroConta, CPF, DataNascimento, Endereco, Senha, PerguntaSecreta, RespostaSecreta, Saldo, Acao1, Acao2, _, ValorTotal, ProximaParcela, DataProximaParcela, QtdParcelasRestantes, TaxaJuros)),
+    assert(conta(ID, Nome, NumeroConta, CPF, DataNascimento, Endereco, Senha, PerguntaSecreta, RespostaSecreta, Saldo, Acao1, Acao2, Acao3, ValorTotal, ProximaParcela, DataProximaParcela, QtdParcelasRestantes, TaxaJuros)).
+
+deletaConta(CPF) :-
+    retract(conta(_, _, _, CPF, _, _, _, _, _, _, _, _, _, _, _, _, _, _)).
+
+registrarDadosNoCSV :-
+    findall(conta(ID, Nome, NumeroConta, CPF, DataNascimento, Endereco, Senha, PerguntaSecreta, RespostaSecreta, Saldo, Acao1, Acao2, Acao3, ValorTotal, ProximaParcela, DataProximaParcela, QtdParcelasRestantes, TaxaJuros), conta(ID, Nome, NumeroConta, CPF, DataNascimento, Endereco, Senha, PerguntaSecreta, RespostaSecreta, Saldo, Acao1, Acao2, Acao3, ValorTotal, ProximaParcela, DataProximaParcela, QtdParcelasRestantes, TaxaJuros), Contas),
+    csv_write_file('./Prolog/resources/db.csv', Contas).

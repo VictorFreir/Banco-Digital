@@ -1,5 +1,5 @@
 identificador,nome,numeroConta,cpf,dataNascimento,endereco,senha,perguntaSecreta,2respostaSecreta,saldo,acao1,acao2,acao3,valorTotal,proximaParcela,dataProximaParcela,quantParcelasRestantes,taxaJuros
-1,Raniel,9456123,33333333333,21/12/2001,BIU 302,mypass,nome do chacorro, gato,3817.4224,30,2,0,0.0,0.0,07/2023,0,0.0
+1,Raniel,9456123,33333333333,21/12/2001,BIU 302,mypass,nome do chacorro, gato,1500,30,2,0,0.0,0.0,07/2023,0,0.0
 2,Helder,9456124,11111111111,05/05/1999,casa,123,nome da vo, marta,3500.0,0,0,0,0.0,0.0,07/2023,0,0.0
 3,Abraao,9456125,2,10/04/2003,casa,123,anime favorito,naruto,1200.0,0,0,0,0.0,0.0,07/2023,0,0.0
-4,Marcelo,55789-964,895895763,15/06/1987,Rua dos bobos Nº 0,1234,Nome do gato,Saruê,950.0,0,0,0,0.0,200.0,07/2023,13,0.15
+4,Marcelo,55789-964,10,15/06/1987,Rua dos bobos Nº 0,1234,Nome do gato,Saruê,950.0,0,0,0,0.0,200.0,07/2023,13,0.15
