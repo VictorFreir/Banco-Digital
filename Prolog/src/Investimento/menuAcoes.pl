@@ -25,9 +25,10 @@ selecionaFuncionalidadeAcoes(2):-
     atualizaTodos,
     selecionaFuncionalidadeAcoes(Entrada).
 selecionaFuncionalidadeAcoes(3):-
-    shell(clear),ém os dados necessários para a execução correta do código.
-
-
+    shell(clear),
+    vendeAcoes,
+    exibeFuncionalidadesAcoes,
+    read(Entrada),
     atualizaTodos,
     selecionaFuncionalidadeAcoes(Entrada).
 selecionaFuncionalidadeAcoes(4):-
