@@ -10,49 +10,56 @@ exibeFuncionalidadesAcoes:-
     write('  5- Resgatar Dividendos'), nl,
     write('  6- Sair'), nl.
 
-selecionaFuncionalidadeAcoes(1):-
+selecionaFuncionalidadeAcoes(1, Cpf):-
     shell(clear),
     printAllAcoes,
     exibeFuncionalidadesAcoes,
     read(Entrada),
     atualizaTodos,
-    selecionaFuncionalidadeAcoes(Entrada).
-selecionaFuncionalidadeAcoes(2):-
+    selecionaFuncionalidadeAcoes(Entrada, Cpf).
+selecionaFuncionalidadeAcoes(2, Cpf):-
     shell(clear),
-    compraAcoes,
+    compraAcoes(Cpf),
     exibeFuncionalidadesAcoes,
     read(Entrada),
     atualizaTodos,
-    selecionaFuncionalidadeAcoes(Entrada).
-selecionaFuncionalidadeAcoes(3):-
+    selecionaFuncionalidadeAcoes(Entrada, Cpf).
+selecionaFuncionalidadeAcoes(3, Cpf):-
     shell(clear),
-    vendeAcoes,
+    vendeAcoes(Cpf),
     exibeFuncionalidadesAcoes,
     read(Entrada),
     atualizaTodos,
-    selecionaFuncionalidadeAcoes(Entrada).
-selecionaFuncionalidadeAcoes(4):-
+    selecionaFuncionalidadeAcoes(Entrada, Cpf).
+selecionaFuncionalidadeAcoes(4, Cpf):-
     shell(clear),
-    minhasAcoes,
+    minhasAcoes(Cpf),
     exibeFuncionalidadesAcoes,
     read(Entrada),
     atualizaTodos,
-    selecionaFuncionalidadeAcoes(Entrada).
-selecionaFuncionalidadeAcoes(5):-
+    selecionaFuncionalidadeAcoes(Entrada, Cpf).
+selecionaFuncionalidadeAcoes(5, Cpf):-
     shell(clear),
-    resgatarDividendos,
+    resgatarDividendos(Cpf),
     exibeFuncionalidadesAcoes,
     read(Entrada),
     atualizaTodos,
-    selecionaFuncionalidadeAcoes(Entrada).
-selecionaFuncionalidadeAcoes(6):-
+    selecionaFuncionalidadeAcoes(Entrada, Cpf).
+selecionaFuncionalidadeAcoes(6, Cpf):-
     shell(clear),
     formatFromAcaoToCsv,
     write('Saindo...'), nl.
-main:-
+selecionaFuncionalidadeAcoes(_, Cpf):-
+    shell(clear),
+    write('Acao Invalida, por favor, selecione novamente!'),
+    exibeFuncionalidadesAcoes,
+    read(Entrada),
+    selecionaFuncionalidadeAcoes(Entrada, Cpf).
+
+menuAcoes(Cpf):-
     readFromCsvToAcao,
     shell(clear),
     exibeFuncionalidadesAcoes,
     read(Entrada),
-    selecionaFuncionalidadeAcoes(Entrada).
+    selecionaFuncionalidadeAcoes(Entrada, Cpf).
     

@@ -1,14 +1,15 @@
 :- initialization(main).
 :- initialization(quiet).
 
-:- include('transferencia.pl').
-:- include('consultarEmprestimo.pl').
-:- include('solicitarEmprestimo.pl').
-:- discontiguous buscaSaldo/2.
-:- discontiguous subtraiSaldo/3.
-:- discontiguous sair/0.
-:- discontiguous conta/3.
-:- discontiguous calculaValorTotalEmprestimo/2.
+:- consult('Investimento/menuAcoes.pl').
+#:- include('transferencia.pl').
+#:- include('consultarEmprestimo.pl').
+#:- include('solicitarEmprestimo.pl').
+#:- discontiguous buscaSaldo/2.
+#:- discontiguous subtraiSaldo/3.
+#:- discontiguous sair/0.
+#:- discontiguous conta/3.
+#:- discontiguous calculaValorTotalEmprestimo/2.
 
 menuFuncionalidades:-
     write("=============== menu principal ==============="),nl,
@@ -30,7 +31,8 @@ seletorFuncionalidades(1,Cpf):-
     true.
 
 seletorFuncionalidades(2,Cpf):-
-    menuTransferencia(Cpf).
+    true.
+    #menuTransferencia(Cpf).
 
 seletorFuncionalidades(3,Cpf):-
     true.
@@ -45,7 +47,7 @@ seletorFuncionalidades(6,Cpf):-
     true.
 
 seletorFuncionalidades(7,Cpf):-
-    true.
+    menuAcoes(Cpf).
 
 seletorFuncionalidades(_,_):-
     write("=============== Fim da execucao ==============="),

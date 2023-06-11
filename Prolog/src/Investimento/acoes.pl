@@ -30,7 +30,7 @@ printAllAcoes:-
     write('2 - HaisCompany - Valor: R$ '), write(PrecoHC), write(' - Dividendos: 3%'), nl,
     write('3 - Muquiff - Valor: R$ '), write(PrecoMQ), write(' - Dividendos: 8%'), nl.
 
-compraAcoes:-
+compraAcoes(Cpf):-
     write('Digite o ID da acao que deseja comprar:'), nl,
     printAllAcoes,
     read(IdAcao),
@@ -44,8 +44,8 @@ compraAcoes:-
     (Confirmacao =:= 1 -> 
         write('Compra realizada com sucesso!'); write('Compra cancelada!')),nl.
 
-vendeAcoes:- 
-    minhasAcoes,
+vendeAcoes(Cpf):- 
+    minhasAcoes(Cpf),
     write('Digite o ID da acao que deseja vender:'), nl,
     read(IdAcao),
     write('Digite a quantidade de acoes que deseja vender:'), nl,
@@ -60,30 +60,26 @@ vendeAcoes:-
         write('Voce recebeu R$ '), write(Valor), write(' em sua conta!')
         ; write('Venda cancelada!')),nl.
 
-minhasAcoes:-
+minhasAcoes(Cpf):-
     write('Atualmente, voce possui as seguintes acoes:'), nl,
     write('1 - PixGet - Quantidade: 100'), nl,
     write('2 - HaisCompany - Quantidade: 100'), nl,
     write('3 - Muquiff - Quantidade: 100'), nl.
 
-resgatarDividendos:-
-    write('Digite o ID da acao que deseja resgatar os dividendos:'), nl,
-    read(IdAcao),
-    acao(IdAcao, _, Preco, Dividendos),
-    Valor is Preco * Dividendos,
-    write('Valor total dos dividendos: R$ '), write(Valor), nl,
+resgatarDividendos(Cpf):-
+    write('Valor total dos dividendos para ser recuperados: R$ '), write(Valor), nl,
     write('Digite 1 para confirmar ou 0 para cancelar:'), nl,
     read(Confirmacao),
     (Confirmacao =:= 1 -> 
         write('Dividendos resgatados com sucesso!'), nl,
-        write('Voce recebeu R$ '), write(Valor), write(' em sua conta!')
-        ; write('Resgate cancelado!')).
+        write('Voce recebeu R$ '), write(Valor), write(' em sua conta!'), nl
+        ; write('Resgate cancelado!'), nl).
 
 
 readFromCsvToAcao:-
-    csv_read_file('acoes.csv', Rows, [functor(acao), arity(4)]),
+    csv_read_file('Investimento/acoes.csv', Rows, [functor(acao), arity(4)]),
     maplist(assert, Rows).
 
 formatFromAcaoToCsv:-
     findall(acao(IdAcao,Nome,Preco,Div), acao(IdAcao,Nome,Preco,Div), Acoes),
-    csv_write_file('acoes.csv', Acoes).
+    csv_write_file('Investimento/acoes.csv', Acoes).
