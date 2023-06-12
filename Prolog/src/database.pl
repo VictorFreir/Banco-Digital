@@ -1,59 +1,88 @@
 :- use_module(library(csv)).
-:- dynamic conta/18.
+:- dynamic conta/22.
 
-id(1).
-incrementa_id :- retract(id(X)), Y is X + 1, assert(id(Y)).
+id(1000).
+incrementa_id :- retract(id(X)), Y is X + 1, assertz(id(Y)).
 :- dynamic id/1.
 
-conta(ID, Nome, NumeroConta, CPF, DataNascimento, Endereco, Senha, PerguntaSecreta, RespostaSecreta, Saldo, Acao1, Acao2, Acao3, ValorTotal, ProximaParcela, DataProximaParcela, QtdParcelasRestantes, TaxaJuros).
+% conta(ID, Nome, NumeroConta, CPF, DataNascimento, Endereco, Senha, PerguntaSecreta, RespostaSecreta, Saldo, Acao1, Acao2, Acao3, ValorTotal, ProximaParcela, DiaProximaParcela, MesProximaParcela, AnoProximaParcela, QtdParcelasRestantes, TaxaJuros, ValorInvestido).
 
-lerCSV :-
-    csv_read_file('./Prolog/resources/db.csv', Rows, [functor(conta), arity(18)]),
-    maplist(assert, Rows).
+% Regra auxiliar
+lerContasAux([]).
+lerContasAux([row(ID, Nome, NumeroConta, CPF, DataNascimento, Endereco, Senha, PerguntaSecreta, RespostaSecreta, Saldo, Acao1, Acao2, Acao3, ValorTotal, ProximaParcela, DiaProximaParcela, MesProximaParcela, AnoProximaParcela, QtdParcelasRestantes, TaxaJuros, ValorInvestido, Extrato)|T]) :-
+    assertz(conta(ID, Nome, NumeroConta, CPF, DataNascimento, Endereco, Senha, PerguntaSecreta, RespostaSecreta, Saldo, Acao1, Acao2, Acao3, ValorTotal, ProximaParcela, DiaProximaParcela, MesProximaParcela, AnoProximaParcela, QtdParcelasRestantes, TaxaJuros, ValorInvestido, Extrato)),
+    lerContasAux(T).
 
-criaConta(Nome, NumeroConta, CPF, DataNascimento, Endereco, Senha, PerguntaSecreta, RespostaSecreta, Saldo, Acao1, Acao2, Acao3, ValorTotal, ProximaParcela, DataProximaParcela, QtdParcelasRestantes, TaxaJuros) :-
+% Regra auxiliar
+lerCSV(File) :-
+    csv_read_file('./Prolog/resources/db.csv', File).
+
+% Regra principal, precisa ser chamada para ler o arquivo
+% Necessáio para que as contas sejam carregadas na memória
+lerContas :-
+    lerCSV(File),
+    lerContasAux(File).
+
+criaConta(Nome, NumeroConta, CPF, DataNascimento, Endereco, Senha, PerguntaSecreta, RespostaSecreta, Saldo, Acao1, Acao2, Acao3, ValorTotal, ProximaParcela, DiaProximaParcela, MesProximaParcela, AnoProximaParcela, QtdParcelasRestantes, TaxaJuros, ValorInvestido, Extrato) :-
     id(ID), incrementa_id,
-    assert(conta(ID, Nome, NumeroConta, CPF, DataNascimento, Endereco, Senha, PerguntaSecreta, RespostaSecreta, Saldo, Acao1, Acao2, Acao3, ValorTotal, ProximaParcela, DataProximaParcela, QtdParcelasRestantes, TaxaJuros)).
+    assertz(conta(ID, Nome, NumeroConta, CPF, DataNascimento, Endereco, Senha, PerguntaSecreta, RespostaSecreta, Saldo, Acao1, Acao2, Acao3, ValorTotal, ProximaParcela, DiaProximaParcela, MesProximaParcela, AnoProximaParcela, QtdParcelasRestantes, TaxaJuros, ValorInvestido, Extrato)).
+
+consultarSaldo(CPF, Saldo) :-
+    conta(_, _, _, CPF, _, _, _, _, _, Saldo, _, _, _, _, _, _, _, _,_, _, _, _).
 
 alterarSaldo(CPF, Saldo) :-
-    retract(conta(ID, Nome, NumeroConta, CPF, DataNascimento, Endereco, Senha, PerguntaSecreta, RespostaSecreta, _, Acao1, Acao2, Acao3, ValorTotal, ProximaParcela, DataProximaParcela, QtdParcelasRestantes, TaxaJuros)),
-    assert(conta(ID, Nome, NumeroConta, CPF, DataNascimento, Endereco, Senha, PerguntaSecreta, RespostaSecreta, Saldo, Acao1, Acao2, Acao3, ValorTotal, ProximaParcela, DataProximaParcela, QtdParcelasRestantes, TaxaJuros)).
+    retract(conta(ID, Nome, NumeroConta, CPF, DataNascimento, Endereco, Senha, PerguntaSecreta, RespostaSecreta, _, Acao1, Acao2, Acao3, ValorTotal, ProximaParcela, DiaProximaParcela, MesProximaParcela, AnoProximaParcela, QtdParcelasRestantes, TaxaJuros, ValorInvestido, Extrato)),
+    assertz(conta(ID, Nome, NumeroConta, CPF, DataNascimento, Endereco, Senha, PerguntaSecreta, RespostaSecreta, Saldo, Acao1, Acao2, Acao3, ValorTotal, ProximaParcela, DiaProximaParcela, MesProximaParcela, AnoProximaParcela, QtdParcelasRestantes, TaxaJuros, ValorInvestido, Extrato)).
 
-pegaContaPeloCPF(Id, Nome, NumeroConta, CPF, DataNascimento, Endereco, Senha, PerguntaSecreta, RespostaSecreta, Saldo, Acao1, Acao2, Acao3, ValorTotal, ProximaParcela, DataProximaParcela, QtdParcelasRestantes, TaxaJuros) :-
-    conta(Id, Nome, NumeroConta, CPF, DataNascimento, Endereco, Senha, PerguntaSecreta, RespostaSecreta, Saldo, Acao1, Acao2, Acao3, ValorTotal, ProximaParcela, DataProximaParcela, QtdParcelasRestantes, TaxaJuros).  
+pegaContaPeloCPF(Id, Nome, NumeroConta, CPF, DataNascimento, Endereco, Senha, PerguntaSecreta, RespostaSecreta, Saldo, Acao1, Acao2, Acao3, ValorTotal, ProximaParcela, DiaProximaParcela, MesProximaParcela, AnoProximaParcela, QtdParcelasRestantes, TaxaJuros, ValorInvestido, Extrato) :-
+    conta(Id, Nome, NumeroConta, CPF, DataNascimento, Endereco, Senha, PerguntaSecreta, RespostaSecreta, Saldo, Acao1, Acao2, Acao3, ValorTotal, ProximaParcela, DiaProximaParcela, MesProximaParcela, AnoProximaParcela, QtdParcelasRestantes, TaxaJuros, ValorInvestido, Extrato).  
 
 pegaAcao1(CPF, Acao1) :-
-    conta(_, _, _, CPF, _, _, _, _, _, _, Acao1, _, _, _, _, _, _, _).
+    conta(_, _, _, CPF, _, _, _, _, _, _, Acao1, _, _, _, _, _, _, _, _, _, _, _).
 
 pegaAcao2(CPF, Acao2) :-
-    conta(_, _, _, CPF, _, _, _, _, _, _, _, Acao2, _, _, _, _, _, _).
+    conta(_, _, _, CPF, _, _, _, _, _, _, _, Acao2, _, _, _, _, _, _, _, _, _, _).
 
 pegaAcao3(CPF, Acao3) :-
-    conta(_, _, _, CPF, _, _, _, _, _, _, _, _, Acao3, _, _, _, _, _).
+    conta(_, _, _, CPF, _, _, _, _, _, _, _, _, Acao3, _, _, _, _, _, _, _, _,_).
 
 alterarAcao1(CPF, Acao1) :-
-    retract(conta(ID, Nome, NumeroConta, CPF, DataNascimento, Endereco, Senha, PerguntaSecreta, RespostaSecreta, Saldo, _, Acao2, Acao3, ValorTotal, ProximaParcela, DataProximaParcela, QtdParcelasRestantes, TaxaJuros)),
-    assert(conta(ID, Nome, NumeroConta, CPF, DataNascimento, Endereco, Senha, PerguntaSecreta, RespostaSecreta, Saldo, Acao1, Acao2, Acao3, ValorTotal, ProximaParcela, DataProximaParcela, QtdParcelasRestantes, TaxaJuros)).
+    retract(conta(ID, Nome, NumeroConta, CPF, DataNascimento, Endereco, Senha, PerguntaSecreta, RespostaSecreta, Saldo, _, Acao2, Acao3, ValorTotal, ProximaParcela, DiaProximaParcela, MesProximaParcela, AnoProximaParcela, QtdParcelasRestantes, TaxaJuros, ValorInvestido, Extrato)),
+    assertz(conta(ID, Nome, NumeroConta, CPF, DataNascimento, Endereco, Senha, PerguntaSecreta, RespostaSecreta, Saldo, Acao1, Acao2, Acao3, ValorTotal, ProximaParcela, DiaProximaParcela, MesProximaParcela, AnoProximaParcela, QtdParcelasRestantes, TaxaJuros, ValorInvestido, Extrato)).
 
 alterarAcao2(CPF, Acao2) :-
-    retract(conta(ID, Nome, NumeroConta, CPF, DataNascimento, Endereco, Senha, PerguntaSecreta, RespostaSecreta, Saldo, Acao1, _, Acao3, ValorTotal, ProximaParcela, DataProximaParcela, QtdParcelasRestantes, TaxaJuros)),
-    assert(conta(ID, Nome, NumeroConta, CPF, DataNascimento, Endereco, Senha, PerguntaSecreta, RespostaSecreta, Saldo, Acao1, Acao2, Acao3, ValorTotal, ProximaParcela, DataProximaParcela, QtdParcelasRestantes, TaxaJuros)).
+    retract(conta(ID, Nome, NumeroConta, CPF, DataNascimento, Endereco, Senha, PerguntaSecreta, RespostaSecreta, Saldo, Acao1, _, Acao3, ValorTotal, ProximaParcela, DiaProximaParcela, MesProximaParcela, AnoProximaParcela, QtdParcelasRestantes, TaxaJuros, ValorInvestido, Extrato)),
+    assertz(conta(ID, Nome, NumeroConta, CPF, DataNascimento, Endereco, Senha, PerguntaSecreta, RespostaSecreta, Saldo, Acao1, Acao2, Acao3, ValorTotal, ProximaParcela, DiaProximaParcela, MesProximaParcela, AnoProximaParcela, QtdParcelasRestantes, TaxaJuros, ValorInvestido, Extrato)).
 
 alterarAcao3(CPF, Acao3) :-
-    retract(conta(ID, Nome, NumeroConta, CPF, DataNascimento, Endereco, Senha, PerguntaSecreta, RespostaSecreta, Saldo, Acao1, Acao2, _, ValorTotal, ProximaParcela, DataProximaParcela, QtdParcelasRestantes, TaxaJuros)),
-    assert(conta(ID, Nome, NumeroConta, CPF, DataNascimento, Endereco, Senha, PerguntaSecreta, RespostaSecreta, Saldo, Acao1, Acao2, Acao3, ValorTotal, ProximaParcela, DataProximaParcela, QtdParcelasRestantes, TaxaJuros)).
+    retract(conta(ID, Nome, NumeroConta, CPF, DataNascimento, Endereco, Senha, PerguntaSecreta, RespostaSecreta, Saldo, Acao1, Acao2, _, ValorTotal, ProximaParcela, DiaProximaParcela, MesProximaParcela, AnoProximaParcela, QtdParcelasRestantes, TaxaJuros, ValorInvestido, Extrato)),
+    assertz(conta(ID, Nome, NumeroConta, CPF, DataNascimento, Endereco, Senha, PerguntaSecreta, RespostaSecreta, Saldo, Acao1, Acao2, Acao3, ValorTotal, ProximaParcela, DiaProximaParcela, MesProximaParcela, AnoProximaParcela, QtdParcelasRestantes, TaxaJuros, ValorInvestido, Extrato)).
 
 deletaConta(CPF) :-
-    retract(conta(_, _, _, CPF, _, _, _, _, _, _, _, _, _, _, _, _, _, _)).
+    retract(conta(_, _, _, CPF, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _)).
 
+alterarValorInvestido(CPF, NovoValorInvestido) :-
+    retract(conta(ID, Nome, NumeroConta, CPF, DataNascimento, Endereco, Senha, PerguntaSecreta, RespostaSecreta, Saldo, Acao1, Acao2, Acao3, ValorTotal, ProximaParcela, DiaProximaParcela, MesProximaParcela, AnoProximaParcela, QtdParcelasRestantes, TaxaJuros, _)),
+    assertz(conta(ID, Nome, NumeroConta, CPF, DataNascimento, Endereco, Senha, PerguntaSecreta, RespostaSecreta, Saldo, Acao1, Acao2, Acao3, ValorTotal, ProximaParcela, DiaProximaParcela, MesProximaParcela, AnoProximaParcela, QtdParcelasRestantes, TaxaJuros, NovoValorInvestido)).
+
+consultarValorInvestido(CPF, ValorInvestido) :-
+    conta(_, _, _, CPF, _, _, _, _, _, _, _, _, _, _, _, _, _,_,_,_, ValorInvestido,_).
+
+consultarProximaParcela(CPF, ProximaParcela, DiaProximaParcela, MesProximaParcela, AnoProximaParcela) :-
+    conta(_, _, _, CPF, _,_, _, _, _, _, _, _, _, _, ProximaParcela, DiaProximaParcela, MesProximaParcela, AnoProximaParcela, _, _, _, _).
+
+alterarProximaParcela(CPF, ProximaParcela, DiaProximaParcela, MesProximaParcela, AnoProximaParcela) :-
+    retract(conta(ID, Nome, NumeroConta, CPF, DataNascimento, Endereco, Senha, PerguntaSecreta, RespostaSecreta, Saldo, Acao1, Acao2, Acao3, ValorTotal, _, _, _, _, QtdParcelasRestantes, TaxaJuros, ValorInvestido, Extrato)),
+    assertz(conta(ID, Nome, NumeroConta, CPF, DataNascimento, Endereco, Senha, PerguntaSecreta, RespostaSecreta, Saldo, Acao1, Acao2, Acao3, ValorTotal, ProximaParcela, DiaProximaParcela, MesProximaParcela, AnoProximaParcela, QtdParcelasRestantes, TaxaJuros, ValorInvestido, Extrato)).
+
+consultarExtrato(CPF, Extrato) :-
+    conta(_, _, _, CPF, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, Extrato).
+
+alterarExtrato(CPF, Extrato) :-
+    retract(conta(ID, Nome, NumeroConta, CPF, DataNascimento, Endereco, Senha, PerguntaSecreta, RespostaSecreta, Saldo, Acao1, Acao2, Acao3, ValorTotal, ProximaParcela, DiaProximaParcela, MesProximaParcela, AnoProximaParcela, QtdParcelasRestantes, TaxaJuros, ValorInvestido, _)),
+    assertz(conta(ID, Nome, NumeroConta, CPF, DataNascimento, Endereco, Senha, PerguntaSecreta, RespostaSecreta, Saldo, Acao1, Acao2, Acao3, ValorTotal, ProximaParcela, DiaProximaParcela, MesProximaParcela, AnoProximaParcela, QtdParcelasRestantes, TaxaJuros, ValorInvestido, Extrato)).
+
+% Ao sair do programa, salva os dados no arquivo CSV
 registrarDadosNoCSV :-
-    findall(conta(ID, Nome, NumeroConta, CPF, DataNascimento, Endereco, Senha, PerguntaSecreta, RespostaSecreta, Saldo, Acao1, Acao2, Acao3, ValorTotal, ProximaParcela, DataProximaParcela, QtdParcelasRestantes, TaxaJuros), conta(ID, Nome, NumeroConta, CPF, DataNascimento, Endereco, Senha, PerguntaSecreta, RespostaSecreta, Saldo, Acao1, Acao2, Acao3, ValorTotal, ProximaParcela, DataProximaParcela, QtdParcelasRestantes, TaxaJuros), Contas),
+    findall(conta(ID, Nome, NumeroConta, CPF, DataNascimento, Endereco, Senha, PerguntaSecreta, RespostaSecreta, Saldo, Acao1, Acao2, Acao3, ValorTotal, ProximaParcela, DiaProximaParcela, MesProximaParcela, AnoProximaParcela, QtdParcelasRestantes, TaxaJuros, ValorInvestido, Extrato), conta(ID, Nome, NumeroConta, CPF, DataNascimento, Endereco, Senha, PerguntaSecreta, RespostaSecreta, Saldo, Acao1, Acao2, Acao3, ValorTotal, ProximaParcela, DiaProximaParcela, MesProximaParcela, AnoProximaParcela, QtdParcelasRestantes, TaxaJuros, ValorInvestido, Extrato), Contas),
     csv_write_file('./Prolog/resources/db.csv', Contas).
-
-% Está com um bug ao alterar, ler e escrever no CSV
-% O bug ele não altera e sim cria uma nova conta apenas com o saldo alterado e os demais nulos ([]).
-% 
-% Exemplo do CSV:
-%
-% 4,Marcelo,55789-964,10,15/06/1987,Rua dos bobos Nº 0,1234,Nome do gato,Saruê,950.0,0,0,0,0.0,200.0,07/2023,13,0.15
-% [],[],[],10,[],[],[],[],[],8000,[],[],[],[],[],[],[],[]
