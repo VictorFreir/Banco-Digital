@@ -1,7 +1,7 @@
-:- discontiguous validar_login/iscontiguous validar_login/2.
+:- discontiguous validar_login/2.
 :- discontiguous login/0.
 
-%:- include('menuFuncinalidades.pl').
+:- include('../menuFuncionalidades.pl').
 
 login:-
     write('--- Login ---'), nl,
@@ -11,8 +11,8 @@ login:-
     read(Senha), nl,
     (
         consultarSenha(Cpf, Senha) ->
-        write('Login realizado com sucesso.'), nl
-        %menuFuncinalidades
+        write('Login realizado com sucesso.'), nl,
+        menuFuncionalidades
     ;
         write('CPF ou senha inválidos, tente novamente.'), nl,
         menuPrincipal

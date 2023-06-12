@@ -1,7 +1,7 @@
 :- module(acoes).
 :- dynamic acao/4.
 :- use_module(library(csv)).
-:- consult('database.pl').
+:- consult('../database.pl').
 
 atualizaPrecoNaRegra(IdAcao, Preco):-
     retract(acao(IdAcao,Nome, _,Div)),

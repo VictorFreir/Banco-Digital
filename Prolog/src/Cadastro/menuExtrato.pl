@@ -1,4 +1,4 @@
-:- include('database.pl').
+:- include('../database.pl').
 
 consultaExtrato(Cpf):-
     consultarExtrato(CPF, Extrato),nl,
