@@ -1,4 +1,4 @@
-% :- consult('Investimento/menuAcoes.pl').
+:- consult('Investimento/menuAcoes.pl').
 %:- consult('Transferencia/transferencia.pl').
 :- include('database.pl').
 % :- include('consultarEmprestimo.pl').

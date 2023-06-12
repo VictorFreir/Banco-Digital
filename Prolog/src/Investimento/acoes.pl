@@ -1,6 +1,7 @@
 :- module(acoes).
 :- dynamic acao/4.
 :- use_module(library(csv)).
+:- consult('database.pl').
 
 atualizaPrecoNaRegra(IdAcao, Preco):-
     retract(acao(IdAcao,Nome, _,Div)),
@@ -37,12 +38,26 @@ compraAcoes(Cpf):-
     write('Digite a quantidade de acoes que deseja comprar:'), nl,
     read(Quantidade),
     acao(IdAcao, _, Preco, _),
-    Valor is Preco * Quantidade,
+    ValorNovo is Preco * Quantidade,
+    Valor is round(ValorNovo * 100) / 100,
     write('Valor total da compra: R$ '), write(Valor), nl,
+    consultarSaldo(Cpf, Saldo),
+    write('Atualmente, seu saldo é: R$ '), write(Saldo), nl,
     write('Digite 1 para confirmar ou 0 para cancelar:'), nl,
     read(Confirmacao),
+    pegaAcao1(Cpf, A1),
+    Na1 is A1 + Quantidade,
+    pegaAcao2(Cpf, A2),
+    Na2 is A2 + Quantidade,
+    pegaAcao3(Cpf, A3),
+    Na3 is A3 + Quantidade,
+    NSaldo is Saldo - Valor,
+    (Confirmacao =:= 1 ->
+        (IdAcao =:= 1 -> 
+            alterarAcao1(Cpf, Na1) ; (IdAcao =:= 2 -> alterarAcao2(Cpf, Na2) ; alterarAcao3(Cpf, Na3))); false
+    ),
     (Confirmacao =:= 1 -> 
-        write('Compra realizada com sucesso!'); write('Compra cancelada!')),nl.
+        write('Compra realizada com sucesso!'), alterarSaldo(Cpf, NSaldo); write('Compra cancelada!')),nl.
 
 vendeAcoes(Cpf):- 
     minhasAcoes(Cpf),
@@ -51,35 +66,69 @@ vendeAcoes(Cpf):-
     write('Digite a quantidade de acoes que deseja vender:'), nl,
     read(Quantidade),
     acao(IdAcao, _, Preco, _), 
-    Valor is Preco * Quantidade,
+    ValorNovo is Preco * Quantidade,
+    Valor is round(ValorNovo * 100) / 100,
     write('Valor total da venda: R$ '), write(Valor), nl,
     write('Digite 1 para confirmar ou 0 para cancelar:'), nl,
     read(Confirmacao),
+    pegaAcao1(Cpf, A1),
+    Na1 is A1 - Quantidade,
+    pegaAcao2(Cpf, A2),
+    Na2 is A2 - Quantidade,
+    pegaAcao3(Cpf, A3),
+    Na3 is A3 - Quantidade,
+    consultarSaldo(Cpf, Saldo),
+    NSaldo is Saldo + Valor,
+    (Confirmacao =:= 1 ->
+        (IdAcao =:= 1 -> 
+            alterarAcao1(Cpf, Na1) ; (IdAcao =:= 2 -> alterarAcao2(Cpf, Na2) ; alterarAcao3(Cpf, Na3))); false
+    ),
     (Confirmacao =:= 1 -> 
+        alterarSaldo(Cpf, NSaldo),
         write('Venda realizada com sucesso!'),nl,
         write('Voce recebeu R$ '), write(Valor), write(' em sua conta!')
         ; write('Venda cancelada!')),nl.
 
 minhasAcoes(Cpf):-
+    pegaAcao1(Cpf, A1),
+    pegaAcao2(Cpf, A2),
+    pegaAcao3(Cpf, A3), 
     write('Atualmente, voce possui as seguintes acoes:'), nl,
-    write('1 - PixGet - Quantidade: 100'), nl,
-    write('2 - HaisCompany - Quantidade: 100'), nl,
-    write('3 - Muquiff - Quantidade: 100'), nl.
+    write('1 - PixGet - Quantidade: '), write(A1), nl,
+    write('2 - HaisCompany - Quantidade: '), write(A2), nl,
+    write('3 - Muquiff - Quantidade: '), write(A3), nl.
 
 resgatarDividendos(Cpf):-
+    acao(1,pixget,PrecoPG,0.01),
+    acao(2,haiscompany,PrecoHC,0.03),
+    acao(3,muquiff,PrecoMQ,0.08),
+    pegaAcao1(Cpf, A1),
+    pegaAcao2(Cpf, A2),
+    pegaAcao3(Cpf, A3),
+    D1 is PrecoPG * 0.01,
+    D2 is PrecoHC * 0.03,
+    D3 is PrecoMQ * 0.08,
+    V1 is D1 * A1,
+    V2 is D2 * A2,
+    V3 is D3 * A3,
+    ValorNovo is V1 + V2 + V3,
+    Valor is round(ValorNovo * 100) / 100,
+    consultarSaldo(Cpf, Saldo),
+    NSaldo is Saldo + Valor,
     write('Valor total dos dividendos para ser recuperados: R$ '), write(Valor), nl,
     write('Digite 1 para confirmar ou 0 para cancelar:'), nl,
     read(Confirmacao),
     (Confirmacao =:= 1 -> 
+        alterarSaldo(Cpf, NSaldo),
         write('Dividendos resgatados com sucesso!'), nl,
         write('Voce recebeu R$ '), write(Valor), write(' em sua conta!'), nl
         ; write('Resgate cancelado!'), nl).
 
 
 readFromCsvToAcao:-
-    csv_read_file('Investimento/acoes.csv', Rows, [functor(acao), arity(4)]),
+    csv_read_file('Prolog/src/Investimento/acoes.csv', Rows, [functor(acao), arity(4)]),
     maplist(assert, Rows).
 
 formatFromAcaoToCsv:-
     findall(acao(IdAcao,Nome,Preco,Div), acao(IdAcao,Nome,Preco,Div), Acoes),
-    csv_write_file('Investimento/acoes.csv', Acoes).
+    csv_write_file('Prolog/src/Investimento/acoes.csv', Acoes).
