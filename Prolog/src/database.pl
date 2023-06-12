@@ -88,6 +88,16 @@ consultarQtdParcelasRestantes(CPF, QtdParcelasRestantes) :-
 consultarCPF(CPF) :-
     conta(_, _, _, CPF, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _) -> true; false.
 
+consultarSenha(CPF, Senha) :-
+    conta(_, _, _, CPF, _, _, Senha, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _).
+
+consultarPerguntaSecreta(CPF, PerguntaSecreta, RespostaSecreta) :-
+    conta(_, _, _, CPF, _, _, _, PerguntaSecreta, RespostaSecreta, _, _, _, _, _, _, _, _, _, _, _, _, _).
+
+alterarSenha(CPF, NovaSenha) :-
+    retract(conta(ID, Nome, NumeroConta, CPF, DataNascimento, Endereco, _, PerguntaSecreta, RespostaSecreta, Saldo, Acao1, Acao2, Acao3, ValorTotal, ProximaParcela, DiaProximaParcela, MesProximaParcela, AnoProximaParcela, QtdParcelasRestantes, TaxaJuros, ValorInvestido, Extrato)),
+    assertz(conta(ID, Nome, NumeroConta, CPF, DataNascimento, Endereco, NovaSenha, PerguntaSecreta, RespostaSecreta, Saldo, Acao1, Acao2, Acao3, ValorTotal, ProximaParcela, DiaProximaParcela, MesProximaParcela, AnoProximaParcela, QtdParcelasRestantes, TaxaJuros, ValorInvestido, Extrato)).
+
 % Ao sair do programa, salva os dados no arquivo CSV
 registrarDadosNoCSV :-
     findall(conta(ID, Nome, NumeroConta, CPF, DataNascimento, Endereco, Senha, PerguntaSecreta, RespostaSecreta, Saldo, Acao1, Acao2, Acao3, ValorTotal, ProximaParcela, DiaProximaParcela, MesProximaParcela, AnoProximaParcela, QtdParcelasRestantes, TaxaJuros, ValorInvestido, Extrato), conta(ID, Nome, NumeroConta, CPF, DataNascimento, Endereco, Senha, PerguntaSecreta, RespostaSecreta, Saldo, Acao1, Acao2, Acao3, ValorTotal, ProximaParcela, DiaProximaParcela, MesProximaParcela, AnoProximaParcela, QtdParcelasRestantes, TaxaJuros, ValorInvestido, Extrato), Contas),
