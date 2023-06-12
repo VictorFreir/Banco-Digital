@@ -22,7 +22,6 @@ menuFuncionalidades:-
     write("7- Acoes"),nl,
     write("8- Sair"),nl,
     read(Opcao),
-    Cpf is 15241593446,
     seletorFuncionalidades(Opcao,Cpf),
     menuFuncionalidades.
 
@@ -47,6 +46,10 @@ seletorFuncionalidades(6,Cpf):-
 seletorFuncionalidades(7,Cpf):-
     menuAcoes(Cpf).
 
+seletorFuncionalidades(8,_):-
+    write("=============== Fim da sessão ==============="),nl,
+    menuPrincipal.
+
 seletorFuncionalidades(_,_):-
-    write("=============== Fim da execucao ==============="),
-    halt.
+    write("=============== Opção inválida ==============="),nl,
+    menuFuncionalidades.

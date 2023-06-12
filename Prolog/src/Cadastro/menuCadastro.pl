@@ -2,7 +2,7 @@
 
 :- include('menuLogin.pl').
 :- include('validaData.pl').
-:- include('database.pl').
+:- include('../database.pl').
 
 
 % Predicado principal para testar o cadastro de clientes

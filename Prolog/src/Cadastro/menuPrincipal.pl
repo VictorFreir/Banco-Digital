@@ -5,6 +5,7 @@
 
     
 menuPrincipal :-
+    nl,
     repeat,
     write('--- Menu ---'), nl,
     write('1. Cadastro de Cliente'), nl,
@@ -28,7 +29,9 @@ executar_opcao(3) :-
     nl.
 
 executar_opcao(4):-
-    registrarDadosNoCSV.
+    registrarDadosNoCSV,
+    write("=============== Obrigado por usar nossos serviços ==============="),
+    halt.
 
 executar_opcao(_) :-
     write('Opção inválida. Tente novamente.'), nl,

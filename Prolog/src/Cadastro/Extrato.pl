@@ -1,4 +1,4 @@
-:- include('database.pl').
+:- include('../database.pl').
 
 atualizaExtratoTransferencia(ValorTransferir, Cpf, CpfDestinatario) :-
     consultarExtrato(Cpf, ExtratoTransf),
