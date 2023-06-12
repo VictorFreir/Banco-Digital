@@ -12,7 +12,7 @@ login:-
     (
         consultarSenha(Cpf, Senha) ->
         write('Login realizado com sucesso.'), nl,
-        menuFuncionalidades
+        menuFuncionalidades(Cpf)
     ;
         write('CPF ou senha inválidos, tente novamente.'), nl,
         menuPrincipal

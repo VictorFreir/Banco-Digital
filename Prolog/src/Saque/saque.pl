@@ -2,14 +2,14 @@
 
 sacar(Cpf) :-
     consultarSaldo(Cpf, Saldo),
-    write("O seu saldo atual e: "), write(Saldo),
+    write("O seu saldo atual e: "), write(Saldo),nl,
     write("Informe o valor que deseja sacar: "),
     read(Valor),
     (   Saldo >= Valor ->  
         NovoSaldo is Saldo - Valor, 
         alterarSaldo(Cpf,NovoSaldo),
-        write("Saque realizado com sucesso!"),
-        write("O seu novo saldo e: "), write(NovoSaldo)
+        write("Saque realizado com sucesso!"),nl,
+        write("O seu novo saldo e: "), write(NovoSaldo),nl
     ;   erroValor,
         sacar(Cpf)
     ).

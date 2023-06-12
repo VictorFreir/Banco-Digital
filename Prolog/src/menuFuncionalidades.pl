@@ -1,6 +1,9 @@
-:- consult('Investimento/menuAcoes.pl').
-%:- consult('Transferencia/transferencia.pl').
+:- consult('./Investimento/menuAcoes.pl').
+:- consult('./Transferencia/transferencia.pl').
 :- include('database.pl').
+:- include('./Saque/saque.pl').
+:- include('./Poupanca/poupanca.pl').
+
 % :- include('consultarEmprestimo.pl').
 % :- include('solicitarEmprestimo.pl').
 % :- discontiguous buscaSaldo/2.
@@ -9,8 +12,7 @@
 % :- discontiguous conta/3.
 % :- discontiguous calculaValorTotalEmprestimo/2.
 
-menuFuncionalidades:-
-    lerContas,
+menuFuncionalidades(Cpf):-
     write("=============== menu principal ==============="),nl,
     write("Digite a operacao desejada apenas com o numero:"),nl,
     write("1- Consultar Saldo"),nl,
@@ -23,22 +25,23 @@ menuFuncionalidades:-
     write("8- Sair"),nl,
     read(Opcao),
     seletorFuncionalidades(Opcao,Cpf),
-    menuFuncionalidades.
+    menuFuncionalidades(Cpf).
 
 seletorFuncionalidades(1,Cpf):-
-    true.
+    consultarSaldo(Cpf, Saldo),
+    write("Seu saldo e : "), write(Saldo),nl.
 
 seletorFuncionalidades(2,Cpf):-
     menuTransferencia(Cpf).
 
 seletorFuncionalidades(3,Cpf):-
-    true.
+    sacar(Cpf).
 
 seletorFuncionalidades(4,Cpf):-
     true.
 
 seletorFuncionalidades(5,Cpf):-
-    true.
+    poupanca(Cpf).
 
 seletorFuncionalidades(6,Cpf):-
     true.
@@ -52,4 +55,4 @@ seletorFuncionalidades(8,_):-
 
 seletorFuncionalidades(_,_):-
     write("=============== Opção inválida ==============="),nl,
-    menuFuncionalidades.
+    menuFuncionalidades(Cpf).

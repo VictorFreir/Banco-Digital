@@ -2,7 +2,6 @@
 :- include("../database.pl").
 
 menuTransferencia(Cpf):-
-    lerContas,
     write("Bem vindo a area de transferencia!"),nl,
     write("Para realizar uma transferencia digite 1"),nl,
     write("Para voltar ao menu principal digite 0"),nl,
@@ -14,10 +13,10 @@ primeiroSeletorTransferencia(Opcao,Cpf):-
     !,
     menuTransferir(Cpf).
     
-primeiroSeletorTransferencia(Opcao,_):- 
+primeiroSeletorTransferencia(Opcao,Cpf):- 
     Opcao =:= 0,
     !,
-    sair.
+    sair(Cpf).
     
 menuTransferir(Cpf):-
     write("Digite o CPF do destinatario:"),nl,
@@ -26,9 +25,9 @@ menuTransferir(Cpf):-
     read(ValorTransferir),
     validaEntradas(ValorTransferir, Cpf,CpfDestinatario).
     
-%validaEntradas(_,_, CpfDestinatario):-
-%    (\+buscaCpf(CpfDestinatario)) == true,!,
-%    mensagemCpfInvalido.
+validaEntradas(_,Cpf, CpfDestinatario):-
+    (\+buscaCpf(CpfDestinatario)) == true,!,
+     mensagemCpfInvalido(Cpf).
 
 validaEntradas(ValorTransferir, Cpf, CpfDestinatario):-
     consultarSaldo(Cpf, Saldo),
@@ -36,8 +35,8 @@ validaEntradas(ValorTransferir, Cpf, CpfDestinatario):-
     Temp >= 0,!,
     transferir(ValorTransferir,Cpf,CpfDestinatario).
 
-validaEntradas(_, _, _):-
-    mensagemSaldoInsuficiente.
+validaEntradas(_, Cpf, _):-
+    mensagemSaldoInsuficiente(Cpf).
 
 transferir(ValorTransferir, Cpf, CpfDestinatario):-
     consultarSaldo(Cpf, Saldo),
@@ -47,25 +46,25 @@ transferir(ValorTransferir, Cpf, CpfDestinatario):-
     somaSaldo(SaldoDestinatario,ValorTransferir,NovoSaldoDestinatario),
 	alterarSaldo(CpfDestinatario,NovoSaldoDestinatario),
     write("A transferencia foi realizada com sucesso!"),nl,
-    sair.
+    sair(Cpf).
 
-sair:- 
-    registrarDadosNoCSV.
+sair(Cpf):- 
+    menuFuncionalidades(Cpf).
 
-mensagemSaldoInsuficiente:-
-    write("A transferencia nao pode ser realizada, pois o saldo da conta e insuficiente!"),
-    sair.
+mensagemSaldoInsuficiente(Cpf):-
+    write("A transferencia nao pode ser realizada, pois o saldo da conta e insuficiente!"), nl,
+    sair(Cpf).
 
-mensagemCpfInvalido:-
-    write("A transferencia nao pode ser realizada, pois o CPF informado nao foi encontrado"),
-    sair.
+mensagemCpfInvalido(Cpf):-
+    write("A transferencia nao pode ser realizada, pois o CPF informado nao foi encontrado"), nl,
+    sair(Cpf).
 
 buscaCpf(Cpf):-
-    true.
-    %coloca funcao raniel aqui
+    consultarCPF(Cpf).
+
 
 subtraiSaldo(Saldo,ValorTransferir,NovoSaldo):-
-    NovoSaldo is Saldo-ValorTransferir.
+    NovoSaldo is Saldo - ValorTransferir.
 
 somaSaldo(Saldo,ValorTransferir,NovoSaldo):-
-    NovoSaldo is Saldo+ValorTransferir.
+    NovoSaldo is Saldo + ValorTransferir.
