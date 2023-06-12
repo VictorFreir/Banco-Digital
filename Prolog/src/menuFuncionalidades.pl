@@ -1,17 +1,16 @@
-:- initialization(main).
-:- initialization(quiet).
-
-:- consult('Investimento/menuAcoes.pl').
-#:- include('transferencia.pl').
-#:- include('consultarEmprestimo.pl').
-#:- include('solicitarEmprestimo.pl').
-#:- discontiguous buscaSaldo/2.
-#:- discontiguous subtraiSaldo/3.
-#:- discontiguous sair/0.
-#:- discontiguous conta/3.
-#:- discontiguous calculaValorTotalEmprestimo/2.
+% :- consult('Investimento/menuAcoes.pl').
+%:- consult('Transferencia/transferencia.pl').
+:- include('database.pl').
+% :- include('consultarEmprestimo.pl').
+% :- include('solicitarEmprestimo.pl').
+% :- discontiguous buscaSaldo/2.
+% :- discontiguous subtraiSaldo/3.
+% :- discontiguous sair/0.
+% :- discontiguous conta/3.
+% :- discontiguous calculaValorTotalEmprestimo/2.
 
 menuFuncionalidades:-
+    lerContas,
     write("=============== menu principal ==============="),nl,
     write("Digite a operacao desejada apenas com o numero:"),nl,
     write("1- Consultar Saldo"),nl,
@@ -31,8 +30,7 @@ seletorFuncionalidades(1,Cpf):-
     true.
 
 seletorFuncionalidades(2,Cpf):-
-    true.
-    #menuTransferencia(Cpf).
+    menuTransferencia(Cpf).
 
 seletorFuncionalidades(3,Cpf):-
     true.
