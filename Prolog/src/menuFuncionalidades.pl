@@ -14,7 +14,6 @@
 % :- discontiguous calculaValorTotalEmprestimo/2.
 
 menuFuncionalidades(Cpf):-
-    shell(clear),
     write("=============== menu principal ==============="),nl,
     write("Digite a operacao desejada apenas com o numero:"),nl,
     write("1- Consultar Saldo"),nl,
