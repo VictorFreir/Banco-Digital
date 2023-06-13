@@ -4,31 +4,36 @@ poupanca(Cpf) :-
     consultarSaldo(Cpf, Saldo),
     consultarValorInvestido(Cpf, ValorInvestido),
     write("Valor investido: "), write(ValorInvestido), nl,
-    X = ValorInvestido * 0.01,
-    format("O seu investimento atualmente esta rendendo ~2f por mes", [X]), nl,
+    format("O seu investimento atualmente esta rendendo ~2f por mes", [ValorInvestido * 0.01]), nl,
     write("1- Investir"), nl,
     write("2- Retirar investimento"), nl,
-    read(Comando),
-    seletorPoupanca(Comando, Cpf).
+    read(Escolha),
+    (
+        Escolha =:= 1 -> investe(Cpf)
+        ; Escolha =:= 2 -> retiraInvestimento(Cpf)
+        ; write("Opcao invalida, selecione 1 ou 2."), nl,
+          poupanca(Cpf)
+    ).
 
-seletorPoupanca(1, Cpf) :-
+investe(Cpf) :-
+    write("Informe o valor a investir: "), read(Valor),nl,
     consultarSaldo(Cpf, Saldo),
     consultarValorInvestido(Cpf, ValorInvestido),
-    write("Informe o valor a investir: "), read(Valor),
     Saldo >= Valor ->
     (
-        NovoSaldo is (Saldo - Valor),
-        NovoValorInvestido is (ValorInvestido + Valor),
+        NovoSaldo is Saldo - Valor,
+        NovoValorInvestido is ValorInvestido + Valor,
         alterarSaldo(Cpf, NovoSaldo), 
-        alterarValorInvestido(Cpf, NovoValorInvestido)
+        alterarValorInvestido(Cpf, NovoValorInvestido),
+        poupanca(Cpf)
     );
     erroValor,
     poupanca(Cpf).
 
-seletorPoupanca(2, Cpf) :-
+retiraInvestimento(Cpf) :-
+    write("Informe o valor a retirar do investimento: "), read(Valor),nl,
     consultarSaldo(Cpf, Saldo),
     consultarValorInvestido(Cpf, ValorInvestido),
-    write("Informe o valor a retirar do investimento: "), read(Valor),
     ValorInvestido >= Valor ->
     (
         NovoSaldo is Saldo + Valor,
@@ -37,10 +42,6 @@ seletorPoupanca(2, Cpf) :-
         alterarValorInvestido(Cpf, NovoValorInvestido)
     );
     erroValor,
-    poupanca(Cpf).
-
-seletorPoupanca(_, Cpf):-
-    write("Opcao invalida. Selecione entre as opcoes 1 e 2."), nl,
     poupanca(Cpf).
 
 erroValor :-
