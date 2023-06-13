@@ -16,6 +16,7 @@ selecionaFuncionalidadeAcoes(1, Cpf):-
     read(Entrada),
     atualizaTodos,
     selecionaFuncionalidadeAcoes(Entrada, Cpf).
+
 selecionaFuncionalidadeAcoes(2, Cpf):-
     shell(clear),
     compraAcoes(Cpf),
@@ -23,6 +24,7 @@ selecionaFuncionalidadeAcoes(2, Cpf):-
     read(Entrada),
     atualizaTodos,
     selecionaFuncionalidadeAcoes(Entrada, Cpf).
+
 selecionaFuncionalidadeAcoes(3, Cpf):-
     shell(clear),
     vendeAcoes(Cpf),
@@ -30,6 +32,7 @@ selecionaFuncionalidadeAcoes(3, Cpf):-
     read(Entrada),
     atualizaTodos,
     selecionaFuncionalidadeAcoes(Entrada, Cpf).
+
 selecionaFuncionalidadeAcoes(4, Cpf):-
     shell(clear),
     minhasAcoes(Cpf),
@@ -37,6 +40,7 @@ selecionaFuncionalidadeAcoes(4, Cpf):-
     read(Entrada),
     atualizaTodos,
     selecionaFuncionalidadeAcoes(Entrada, Cpf).
+
 selecionaFuncionalidadeAcoes(5, Cpf):-
     shell(clear),
     resgatarDividendos(Cpf),
@@ -44,10 +48,12 @@ selecionaFuncionalidadeAcoes(5, Cpf):-
     read(Entrada),
     atualizaTodos,
     selecionaFuncionalidadeAcoes(Entrada, Cpf).
+
 selecionaFuncionalidadeAcoes(6, Cpf):-
     shell(clear),
     formatFromAcaoToCsv,
     write('Saindo...'), nl.
+
 selecionaFuncionalidadeAcoes(_, Cpf):-
     shell(clear),
     write('Acao Invalida, por favor, selecione novamente!'),
@@ -56,7 +62,6 @@ selecionaFuncionalidadeAcoes(_, Cpf):-
     selecionaFuncionalidadeAcoes(Entrada, Cpf).
 
 menuAcoes(Cpf):-
-    readFromCsvToAcao,
     shell(clear),
     exibeFuncionalidadesAcoes,
     read(Entrada),
