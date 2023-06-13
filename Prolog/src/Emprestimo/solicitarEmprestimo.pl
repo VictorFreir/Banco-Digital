@@ -3,6 +3,7 @@
 
 
 menuSolicitarEmprestimo(Cpf):-
+    shell(clear),
     write("Bem vindo a area de emprestimos!"),nl,
     write("Para soliticar um emprestimo digite 1"),nl,
     write("Para voltar ao menu principal digite 0"),nl,
@@ -21,6 +22,7 @@ segundoSeletorSolicita(Cpf):-
     Saldo < 500, !, menuSemEmprestimo(Cpf).
     
 menuSolicitar(Cpf):-
+    shell(clear),
     write("Voce tem uma proposta de emprestimo!"),nl,
     calculaValorEmprestimo(Cpf, ValorEmprestimo),
     calculaValorTotalEmprestimo(ValorEmprestimo,ValorTotalEmprestimo),

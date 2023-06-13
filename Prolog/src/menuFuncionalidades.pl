@@ -14,6 +14,7 @@
 % :- discontiguous calculaValorTotalEmprestimo/2.
 
 menuFuncionalidades(Cpf):-
+    shell(clear),
     write("=============== menu principal ==============="),nl,
     write("Digite a operacao desejada apenas com o numero:"),nl,
     write("1- Consultar Saldo"),nl,
@@ -25,6 +26,7 @@ menuFuncionalidades(Cpf):-
     write("7- Acoes"),nl,
     write("8- Sair"),nl,
     read(Opcao),
+    shell(clear),
     seletorFuncionalidades(Opcao,Cpf),
     menuFuncionalidades(Cpf).
 
@@ -57,9 +59,11 @@ seletorFuncionalidades(7,Cpf):-
     menuAcoes(Cpf).
 
 seletorFuncionalidades(8,_):-
+    shell(clear),
     write("=============== Fim da sessao ==============="),nl,
     menuPrincipal.
 
 seletorFuncionalidades(_,_):-
+    shell(clear),
     write("=============== Opcao invalida ==============="),nl,
     menuFuncionalidades(Cpf).

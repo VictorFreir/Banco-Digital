@@ -13,7 +13,7 @@ menuCadastro :-
     validar_idade, nl,
     write('Informe sua Data de Nascimento no formato dd/mm/aaaa (entre aspas): '),nl,
     read(DataNascimento),nl,
-    write('Informe seu endereço (entre aspas): '), nl,
+    write('Informe seu endereco (entre aspas): '), nl,
     read(Endereco), nl,
     write('CPF: '),nl,
     read(CPF),nl,

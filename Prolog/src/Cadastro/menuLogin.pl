@@ -4,6 +4,7 @@
 :- include('../menuFuncionalidades.pl').
 
 login:-
+    shell(clear),
     write('--- Login ---'), nl,
     write('Para efetuar login informe seu CPF:'), nl,
     read(Cpf), nl,
@@ -14,7 +15,7 @@ login:-
         write('Login realizado com sucesso.'), nl,
         menuFuncionalidades(Cpf)
     ;
-        write('CPF ou senha inválidos, tente novamente.'), nl,
+        write('CPF ou senha invalidos, tente novamente.'), nl,
         menuPrincipal
     ).
 

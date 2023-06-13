@@ -3,6 +3,7 @@
 
 
 recuperaSenha:-
+    shell(clear),
     write('Informe seu CPF: '),
     read(CPF),
     ( consultarCPF(CPF)
