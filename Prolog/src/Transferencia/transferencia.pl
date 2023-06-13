@@ -1,5 +1,6 @@
 :- dynamic conta/22.
 :- include("../database.pl").
+:- include("../Cadastro/Extrato.pl").
 
 menuTransferencia(Cpf):-
     write("Bem vindo a area de transferencia!"),nl,
@@ -46,6 +47,7 @@ transferir(ValorTransferir, Cpf, CpfDestinatario):-
     somaSaldo(SaldoDestinatario,ValorTransferir,NovoSaldoDestinatario),
 	alterarSaldo(CpfDestinatario,NovoSaldoDestinatario),
     write("A transferencia foi realizada com sucesso!"),nl,
+    atualizaExtratoTransferencia(ValorTransferir, Cpf, CpfDestinatario),
     sair(Cpf).
 
 sair(Cpf):- 

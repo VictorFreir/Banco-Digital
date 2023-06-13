@@ -1,4 +1,3 @@
-:- module(menuAcoes).
 :- consult('acoes.pl').
 
 exibeFuncionalidadesAcoes:-

@@ -1,4 +1,5 @@
 :- include("../database.pl").
+:- include("../Cadastro/Extrato.pl").
 
 sacar(Cpf) :-
     consultarSaldo(Cpf, Saldo),

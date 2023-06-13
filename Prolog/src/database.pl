@@ -85,6 +85,10 @@ alterarExtrato(CPF, Extrato) :-
 consultarQtdParcelasRestantes(CPF, QtdParcelasRestantes) :-
     conta(_, _, _, CPF, _, _, _, _, _, _, _, _, _, _, _, _, _, _, QtdParcelasRestantes, _, _, _).
 
+alterarQtdParcelasRestantes(CPF, QtdParcelasRestantes) :-
+    retract(conta(ID, Nome, NumeroConta, CPF, DataNascimento, Endereco, Senha, PerguntaSecreta, RespostaSecreta, Saldo, Acao1, Acao2, Acao3, ValorTotal, ProximaParcela, DiaProximaParcela, MesProximaParcela, AnoProximaParcela, _, TaxaJuros, ValorInvestido, Extrato)),
+    assertz(conta(ID, Nome, NumeroConta, CPF, DataNascimento, Endereco, Senha, PerguntaSecreta, RespostaSecreta, Saldo, Acao1, Acao2, Acao3, ValorTotal, ProximaParcela, DiaProximaParcela, MesProximaParcela, AnoProximaParcela, QtdParcelasRestantes, TaxaJuros, ValorInvestido, Extrato)).
+
 consultarCPF(CPF) :-
     conta(_, _, _, CPF, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _) -> true; false.
 

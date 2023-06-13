@@ -12,11 +12,11 @@ primeiroSeletorConsulta(1,Cpf):-
     menuConsultar(Cpf).
     
 primeiroSeletorConsulta(_,_):-
-    sair.
+    sair(Cpf).
 
 menuConsultar(Cpf):-
     write("Aqui esta o seu emprestimo:"),nl,
-    buscaParcela(Cpf,ValorParcela), %Aqui
+    consultarProximaParcela(Cpf,ValorParcela,_,_,_),
     calculaValorEmprestado(ValorParcela,ValorEmprestado),
     write("Valor emprestado: "),
     write(ValorEmprestado),nl,
@@ -26,7 +26,7 @@ menuConsultar(Cpf):-
     calcularValorParcela(Cpf,ValorParcela,NovoValorParcela),
     write("Valor da proxima parcela: "),
     write(NovoValorParcela),nl,
-    buscaQuantidadeParcelas(Cpf,QuantParcelas), %Aqui
+    consultarQtdParcelasRestantes(Cpf,QuantParcelas),
     write("Parcelas restantes: "),
     write(QuantParcelas),nl,
     menuPagar(Cpf,NovoValorParcela).
@@ -36,9 +36,6 @@ calculaValorEmprestado(ValorParcela,ValorEmprestado):-
 
 calculaValorTotalEmprestimo(ValorEmprestado,ValorTotalEmprestimo):-
     ValorTotalEmprestimo is ValorEmprestado*1.1.
-
-buscaQuantidadeParcelas(Cpf,QuantParcelas):-
-    conta(_,Cpf,_,_,_,_,QuantParcelas,_).
 
 
 menuPagar(Cpf,ValorParcela):-
@@ -51,11 +48,11 @@ menuPagar(Cpf,ValorParcela):-
 segundoSeletorConsulta(1, Cpf, ValorParcela):-
     pagar(Cpf,ValorParcela).
 
-segundoSeletorConsulta(_,_,_):-
-    sair.
+segundoSeletorConsulta(_,Cpf,_):-
+    sair(Cpf).
 
 pagar(Cpf,ValorParcela):-
-    buscaSaldo(Cpf,Saldo),
+    consultarSaldo(Cpf,Saldo),
     consultarProximaParcela(Cpf, ValorParcela, Dia, Mes, Ano),
     Saldo >= ValorParcela,!,realizarPagamento(Cpf, ValorParcela, Dia, Mes, Ano),
     Saldo < ValorParcela,!,mensagemSaldoInsuficiente.
@@ -65,9 +62,13 @@ realizarPagamento(Cpf, ValorParcela, Dia, Mes, Ano):-
     buscaNovoMes(Mes,NovoMes),
     buscaNovoAno(Ano,NovoMes,NovoAno),
     subtraiSaldo(Saldo,ValorParcela,NovoSaldo),
-    buscaQuantidadeParcelas(Cpf,QuantParcelas),
+    consultarQtdParcelasRestantes(Cpf,QuantParcelas),
     write("Pagamento realizado com sucesso!"),
-    sair.
+    alterarProximaParcela(Cpf,ValorParcela,Dia,Mes,Ano),
+    novaQuantParcelas is QuantParcelas-1,
+    alterarQtdParcelasRestantes(novaQuantParcelas),
+    alterarSaldo(Cpf,NovoSaldo),
+    sair(Cpf).
 
 buscaNovoMes(12,1):-
     true.
@@ -84,23 +85,26 @@ buscaNovoAno(Ano,_,Ano):-
 subtraiSaldo(Saldo,ValorTransferir,NovoSaldo):-
     NovoSaldo is Saldo-ValorTransferir.
 
-sair:- 
-    registrarDadosNoCSV.
+sair(Cpf):- 
+    menuFuncionalidades(Cpf).
 
 calcularValorParcela(Cpf,ValorParcela,ValorFinalParcela):-
-    buscaMes(Cpf,Mes),
-    buscaAno(Cpf,Ano),
+    consultarProximaParcela(Cpf,_,Dia,Mes,Ano),
     calcularMesesAtrasados(Mes,Ano, MesesAtrasados),
     ValorFinalParcela is (round(100*ValorParcela * ((1.1)**MesesAtrasados)))/100.
 
 calcularMesesAtrasados(Mes,Ano,MesesAtrasados):-
-    pegar_data_atual(_,MesAtual,AnoAtual),
+    pegarDataAtual(_,MesAtual,AnoAtual),
     Temp is (AnoAtual-Ano)*12,
     MesesAtrasados is Temp+(MesAtual-Mes).
 
-pegar_data_atual(Dia, Mes, Ano) :-
+pegarDataAtual(Dia, Mes, Ano) :-
     get_time(Timestamp),
     stamp_date_time(Timestamp, DateTime, local),
     date_time_value(day, DateTime, Dia),
     date_time_value(month, DateTime, Mes),
     date_time_value(year, DateTime, Ano).
+
+mensagemSaldoInsuficiente(Cpf):-
+    write("O seu saldo e insfuficiente para o pagamento dessa parcela!"),
+    sair(Cpf).

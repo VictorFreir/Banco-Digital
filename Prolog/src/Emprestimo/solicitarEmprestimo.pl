@@ -1,12 +1,12 @@
-:- dynamic conta/3.
+:- dynamic conta/22.
+:- include("../database.pl").
 
-conta("victor",15241593446, 1000).
-menuSolicitarEmprestimo:-
+
+menuSolicitarEmprestimo(Cpf):-
     write("Bem vindo a area de emprestimos!"),nl,
     write("Para soliticar um emprestimo digite 1"),nl,
     write("Para voltar ao menu principal digite 0"),nl,
     read(Opcao),
-    Cpf is 15241593446,
     primeiroSeletorSolicita(Opcao,Cpf).
 
 primeiroSeletorSolicita(1,Cpf):- 
@@ -18,7 +18,7 @@ primeiroSeletorSolicita(_,_):-
 segundoSeletorSolicita(Cpf):-
     buscaSaldo(Cpf,Saldo),
     Saldo >= 500, !, menuSolicitar(Cpf),
-    Saldo < 500, !, menuSemEmprestimo.
+    Saldo < 500, !, menuSemEmprestimo(Cpf).
     
 menuSolicitar(Cpf):-
     write("Voce tem uma proposta de emprestimo!"),nl,
@@ -32,24 +32,25 @@ menuSolicitar(Cpf):-
     write("Digite 1, para sim"),nl,
     write("Digite 0, para nao"),nl,
     read(Opcao),
-    terceiroSeletorSolicita(Opcao),
-    soliticaEmprestimo(Cpf,ValorEmprestimo,ValorTotalEmprestimo,ValorParcela),
+    terceiroSeletorSolicita(Opcao,Cpf,ValorParcela),
+    solicitaEmprestimo(Cpf,ValorParcela),
     write("Emprestimo realizado com sucesso!"),nl.
 
-terceiroSeletorSolicita(1):-
+terceiroSeletorSolicita(1,Cpf,ValorParcela):-
     true.
 
-terceiroSeletorSolicita(_):-
-    naoSolicita.
+terceiroSeletorSolicita(_,Cpf,_):-
+    naoSolicita(Cpf).
 
-naoSolicita:-
-    write("O emprestimo nao foi realizado!"),
-    sair.
+naoSolicita(Cpf):-
+    write("O emprestimo nao foi realizado!"),nl,
+    sair(Cpf).
 
-menuSemEmprestimo:-
-    write("Infelizmente, nao temos nenhuma proposta de emprestimo para voce no momento...") .
+menuSemEmprestimo(Cpf):-
+    write("Infelizmente, nao temos nenhuma proposta de emprestimo para voce no momento..."),nl,
+    sair(Cpf).
 
-sair:- abort.
+sair:- menuFuncionalidades(Cpf).
 
 calculaValorEmprestimo(Cpf,ValorEmprestimo):-
     buscaSaldo(Cpf,Saldo),
@@ -61,9 +62,12 @@ calculaValorTotalEmprestimo(ValorEmprestimo,ValorTotalEmprestimo):-
 calculaValorParcela(ValorTotalEmprestimo,ValorParcela):-
     ValorParcela is ValorTotalEmprestimo/10.
 
-soliticaEmprestimo(Cpf,ValorEmprestimo,ValorTotalEmprestimo,ValorParcela):-
-    true.
-    % implementar metodo de raniel
+solicitaEmprestimo(Cpf,ValorParcela):-
+    pegarDataAtual(Dia,Mes,Ano),
+    alterarProximaParcela(Cpf,ValorParcela,Dia,Mes,Ano),
+    alterarQtdParcelasRestantes(Cpf,10),
+    write("Emprestimo soliticado com sucesso!"),
+    sair(Cpf).
 
 buscaSaldo(Cpf,Saldo):-
-    conta(_,Cpf,Saldo).
+    consultarSaldo(Cpf,Saldo).

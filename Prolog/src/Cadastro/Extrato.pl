@@ -9,3 +9,9 @@ atualizaExtratoTransferencia(ValorTransferir, Cpf, CpfDestinatario) :-
     atom_concat(ExtratoDep, Deposito, NovoExtratoDep),
     alterarExtrato(Cpf, NovoExtratoTransf),
     alterarExtrato(CpfDestinatario, NovoExtratoDep).
+
+atualizaExtratoSaque(Valor, Cpf) :-
+    consultarExtrato(Cpf, ExtratoSaque),
+    format(atom(Saque), "Saque no valor de ~2f realizada com sucesso.", [Valor]),
+    atom_concat(ExtratoSaque, Saque, NovoExtratoSaque),
+    alterarExtrato(Cpf, NovoExtratoSaque).

@@ -3,9 +3,10 @@
 :- include('database.pl').
 :- include('./Saque/saque.pl').
 :- include('./Poupanca/poupanca.pl').
+:- include('./Cadastro/menuExtrato.pl').
+:- consult('./Emprestimo/consultarEmprestimo.pl').
+:- consult('./Emprestimo/solicitarEmprestimo.pl').
 
-% :- include('consultarEmprestimo.pl').
-% :- include('solicitarEmprestimo.pl').
 % :- discontiguous buscaSaldo/2.
 % :- discontiguous subtraiSaldo/3.
 % :- discontiguous sair/0.
@@ -38,21 +39,27 @@ seletorFuncionalidades(3,Cpf):-
     sacar(Cpf).
 
 seletorFuncionalidades(4,Cpf):-
-    true.
+    consultaExtrato(Cpf).
 
 seletorFuncionalidades(5,Cpf):-
     poupanca(Cpf).
 
 seletorFuncionalidades(6,Cpf):-
-    true.
+    consultarQtdParcelasRestantes(Cpf, ParcelasRestantes),
+    ParcelasRestantes > 0, 
+    !,
+    menuConsultarEmprestimo(Cpf).
+
+seletorFuncionalidades(6,Cpf):-
+    menuSolicitarEmprestimo(Cpf).
 
 seletorFuncionalidades(7,Cpf):-
     menuAcoes(Cpf).
 
 seletorFuncionalidades(8,_):-
-    write("=============== Fim da sessão ==============="),nl,
+    write("=============== Fim da sessao ==============="),nl,
     menuPrincipal.
 
 seletorFuncionalidades(_,_):-
-    write("=============== Opção inválida ==============="),nl,
+    write("=============== Opcao invalida ==============="),nl,
     menuFuncionalidades(Cpf).
